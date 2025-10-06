@@ -15,17 +15,32 @@ function AdminDashboard() {
   const [inquiries, setInquiries] = useState([]);
   const [messages, setMessages] = useState([]);
   const [messageStats, setMessageStats] = useState({ total: 0, unread: 0, replied: 0 });
-  const [activeTab, setActiveTab] = useState('bookings'); // 'bookings', 'inquiries', or 'messages'
+  const [services, setServices] = useState([]);
+  const [activeTab, setActiveTab] = useState('bookings'); // 'bookings', 'inquiries', 'messages', or 'services'
   const [loading, setLoading] = useState(true);
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [selectedService, setSelectedService] = useState(null);
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
+  const [showServiceModal, setShowServiceModal] = useState(false);
   const [responseData, setResponseData] = useState({
     price: '',
     availability: '',
     delivery_time: '',
     additional_info: ''
+  });
+  const [serviceData, setServiceData] = useState({
+    name_est: '',
+    name_eng: '',
+    name_rus: '',
+    description_est: '',
+    description_eng: '',
+    description_rus: '',
+    category: '',
+    price: '',
+    duration_minutes: '',
+    is_active: true
   });
 
   useEffect(() => {
@@ -78,6 +93,11 @@ function AdminDashboard() {
         ...prevStats,
         totalMessages: msgStats.unread || msgStats.total || 0
       }));
+
+      // Fetch services
+      const servicesResponse = await api.get('/services?active=false');
+      console.log('Services response:', servicesResponse.data);
+      setServices(servicesResponse.data?.data || servicesResponse.data || []);
 
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -211,6 +231,80 @@ function AdminDashboard() {
     }
   };
 
+  // Service management functions
+  const openServiceModal = (service = null) => {
+    if (service) {
+      setSelectedService(service);
+      setServiceData({
+        name_est: service.name_est || '',
+        name_eng: service.name_eng || '',
+        name_rus: service.name_rus || '',
+        description_est: service.description_est || '',
+        description_eng: service.description_eng || '',
+        description_rus: service.description_rus || '',
+        category: service.category || '',
+        price: service.price || '',
+        duration_minutes: service.duration_minutes || '',
+        is_active: service.is_active !== undefined ? service.is_active : true
+      });
+    } else {
+      setSelectedService(null);
+      setServiceData({
+        name_est: '',
+        name_eng: '',
+        name_rus: '',
+        description_est: '',
+        description_eng: '',
+        description_rus: '',
+        category: '',
+        price: '',
+        duration_minutes: '',
+        is_active: true
+      });
+    }
+    setShowServiceModal(true);
+  };
+
+  const closeServiceModal = () => {
+    setShowServiceModal(false);
+    setSelectedService(null);
+  };
+
+  const handleServiceSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      if (selectedService) {
+        // Update existing service
+        await api.put(`/admin/teenused/${selectedService.id}`, serviceData);
+        toast.success('Teenus uuendatud');
+      } else {
+        // Create new service
+        await api.post('/admin/teenused', serviceData);
+        toast.success('Teenus lisatud');
+      }
+      closeServiceModal();
+      fetchDashboardData();
+    } catch (error) {
+      toast.error(selectedService ? 'Viga teenuse uuendamisel' : 'Viga teenuse lisamisel');
+      console.error('Service error:', error);
+    }
+  };
+
+  const deleteService = async (serviceId) => {
+    if (!window.confirm('Kas oled kindel, et soovid teenuse kustutada?')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/admin/teenused/${serviceId}`);
+      toast.success('Teenus kustutatud');
+      fetchDashboardData();
+    } catch (error) {
+      toast.error('Viga teenuse kustutamisel');
+    }
+  };
+
   const getStatusColor = (status) => {
     const colors = {
       'pending': 'bg-yellow-100 text-yellow-800',
@@ -308,6 +402,16 @@ function AdminDashboard() {
                   {messageStats.unread}
                 </span>
               )}
+            </button>
+            <button
+              onClick={() => setActiveTab('services')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'services'
+                  ? 'border-primary-600 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Teenused ({services.length})
             </button>
           </nav>
         </div>
@@ -560,6 +664,256 @@ function AdminDashboard() {
                     )}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Services Table */}
+        {activeTab === 'services' && (
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Teenuste haldamine</h2>
+              <button
+                onClick={() => openServiceModal()}
+                className="px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700"
+              >
+                + Lisa teenus
+              </button>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="min-w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="text-left py-3 px-4">ID</th>
+                    <th className="text-left py-3 px-4">Nimi (EST)</th>
+                    <th className="text-left py-3 px-4">Kategooria</th>
+                    <th className="text-left py-3 px-4">Hind</th>
+                    <th className="text-left py-3 px-4">Kestus (min)</th>
+                    <th className="text-left py-3 px-4">Staatus</th>
+                    <th className="text-left py-3 px-4">Toimingud</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {services.length === 0 ? (
+                    <tr>
+                      <td colSpan="7" className="text-center py-8 text-gray-500">
+                        Teenuseid ei leitud
+                      </td>
+                    </tr>
+                  ) : (
+                    services.map((service) => (
+                      <tr key={service.id} className="border-b hover:bg-gray-50">
+                        <td className="py-3 px-4">{service.id}</td>
+                        <td className="py-3 px-4 font-medium">{service.name_est}</td>
+                        <td className="py-3 px-4">
+                          <span className="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                            {service.category}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">
+                          {service.price ? `${service.price}€` : 'Hinna järgi'}
+                        </td>
+                        <td className="py-3 px-4">{service.duration_minutes || '-'}</td>
+                        <td className="py-3 px-4">
+                          <span className={`text-xs px-2 py-1 rounded ${
+                            service.is_active 
+                              ? 'bg-green-100 text-green-700' 
+                              : 'bg-red-100 text-red-700'
+                          }`}>
+                            {service.is_active ? 'Aktiivne' : 'Mitteaktiivne'}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => openServiceModal(service)}
+                              className="text-blue-600 hover:text-blue-800"
+                            >
+                              Muuda
+                            </button>
+                            <button
+                              onClick={() => deleteService(service.id)}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              Kustuta
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Service Modal */}
+        {showServiceModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-2xl font-bold">
+                    {selectedService ? 'Muuda teenust' : 'Lisa uus teenus'}
+                  </h2>
+                  <button
+                    onClick={closeServiceModal}
+                    className="text-gray-500 hover:text-gray-700 text-2xl"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <form onSubmit={handleServiceSubmit}>
+                  {/* Estonian fields */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-primary-600">Eesti keel</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Nimi (EST) *</label>
+                        <input
+                          type="text"
+                          required
+                          value={serviceData.name_est}
+                          onChange={(e) => setServiceData({ ...serviceData, name_est: e.target.value })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Kirjeldus (EST)</label>
+                        <textarea
+                          value={serviceData.description_est}
+                          onChange={(e) => setServiceData({ ...serviceData, description_est: e.target.value })}
+                          rows="3"
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* English fields */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-primary-600">English</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Name (ENG)</label>
+                        <input
+                          type="text"
+                          value={serviceData.name_eng}
+                          onChange={(e) => setServiceData({ ...serviceData, name_eng: e.target.value })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Description (ENG)</label>
+                        <textarea
+                          value={serviceData.description_eng}
+                          onChange={(e) => setServiceData({ ...serviceData, description_eng: e.target.value })}
+                          rows="3"
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Russian fields */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-primary-600">Русский</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Название (RUS)</label>
+                        <input
+                          type="text"
+                          value={serviceData.name_rus}
+                          onChange={(e) => setServiceData({ ...serviceData, name_rus: e.target.value })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Описание (RUS)</label>
+                        <textarea
+                          value={serviceData.description_rus}
+                          onChange={(e) => setServiceData({ ...serviceData, description_rus: e.target.value })}
+                          rows="3"
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Additional fields */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-primary-600">Teenuse andmed</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Kategooria *</label>
+                        <select
+                          required
+                          value={serviceData.category}
+                          onChange={(e) => setServiceData({ ...serviceData, category: e.target.value })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        >
+                          <option value="">Vali kategooria</option>
+                          <option value="remonttööd">Remonttööd</option>
+                          <option value="mootoriremont">Mootoriremont</option>
+                          <option value="diagnostika">Diagnostika</option>
+                          <option value="elektritööd">Elektritööd</option>
+                          <option value="ostueelne_kontroll">Ostueelne kontroll</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Hind (€)</label>
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={serviceData.price}
+                          onChange={(e) => setServiceData({ ...serviceData, price: e.target.value })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          placeholder="Tühi = hinna järgi"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Kestus (minutid)</label>
+                        <input
+                          type="number"
+                          value={serviceData.duration_minutes}
+                          onChange={(e) => setServiceData({ ...serviceData, duration_minutes: e.target.value })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="flex items-center space-x-2 mt-6">
+                          <input
+                            type="checkbox"
+                            checked={serviceData.is_active}
+                            onChange={(e) => setServiceData({ ...serviceData, is_active: e.target.checked })}
+                            className="w-4 h-4 text-primary-600 focus:ring-primary-500"
+                          />
+                          <span className="text-sm font-medium">Aktiivne teenus</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end gap-4">
+                    <button
+                      type="button"
+                      onClick={closeServiceModal}
+                      className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
+                    >
+                      Tühista
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700"
+                    >
+                      {selectedService ? 'Uuenda' : 'Lisa teenus'}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
