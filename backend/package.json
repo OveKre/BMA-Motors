@@ -1,0 +1,39 @@
+{
+  "name": "bma-motors-backend",
+  "version": "1.0.0",
+  "description": "BMA Motors backend API server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --coverage",
+    "import-cars": "node src/utils/importCarData.js"
+  },
+  "keywords": ["bmw", "motors", "repair", "booking", "api"],
+  "author": "BMA Motors",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.6.5",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "morgan": "^1.10.0",
+    "winston": "^3.11.0",
+    "nodemailer": "^6.9.7",
+    "axios": "^1.6.2",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.1",
+    "date-fns": "^3.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "@types/jest": "^29.5.11"
+  }
+}

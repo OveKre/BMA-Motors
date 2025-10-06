@@ -1,0 +1,168 @@
+import { useTranslation } from 'react-i18next';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
+import api from '../api/axios';
+
+function Contact() {
+  const { t, i18n } = useTranslation();
+  const [loading, setLoading] = useState(false);
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    message: Yup.string().required('Message is required'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      phone: '',
+      subject: '',
+      message: '',
+    },
+    validationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        setLoading(true);
+        const response = await api.post('/contact', values);
+        
+        if (response.data.success) {
+          toast.success(t('contact.success'));
+          resetForm();
+        }
+      } catch (error) {
+        toast.error(error.response?.data?.error?.message || 'Error sending message');
+      } finally {
+        setLoading(false);
+      }
+    },
+  });
+
+  return (
+    <div className="py-16 bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="section-title text-center">{t('contact.title')}</h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+          {/* Contact Form */}
+          <div className="card">
+            <form onSubmit={formik.handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('contact.name')} *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  className="input-field"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('contact.email')} *
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  className="input-field"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('contact.phone')}
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  className="input-field"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('contact.subject')}
+                </label>
+                <input
+                  type="text"
+                  name="subject"
+                  value={formik.values.subject}
+                  onChange={formik.handleChange}
+                  className="input-field"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('contact.message')} *
+                </label>
+                <textarea
+                  name="message"
+                  value={formik.values.message}
+                  onChange={formik.handleChange}
+                  rows={5}
+                  className="input-field"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary w-full"
+              >
+                {loading ? 'Saadan...' : t('contact.submit')}
+              </button>
+            </form>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-6">
+            <div className="card">
+              <h3 className="text-xl font-semibold mb-4">Kontaktandmed</h3>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-sm text-gray-600">E-mail</p>
+                  <p className="font-medium">info@bmamotors.ee</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Telefon</p>
+                  <p className="font-medium">+372 XXXX XXXX</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Aadress</p>
+                  <p className="font-medium">Tallinn, Estonia</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="card">
+              <h3 className="text-xl font-semibold mb-4">Tööaeg</h3>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Esmaspäev - Reede</span>
+                  <span className="font-medium">09:00 - 18:00</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Laupäev - Pühapäev</span>
+                  <span className="font-medium">Suletud</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Contact;

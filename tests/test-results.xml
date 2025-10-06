@@ -1,0 +1,194 @@
+<testsuites id="" name="" tests="66" failures="0" skipped="6" errors="0" time="233.787802">
+<testsuite name="admin.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="chromium" tests="5" failures="0" skipped="2" time="7.317" errors="0">
+<testcase name="Admin Panel › should display admin login page" classname="admin.spec.js" time="2.12">
+</testcase>
+<testcase name="Admin Panel › should show validation for empty credentials" classname="admin.spec.js" time="1.679">
+</testcase>
+<testcase name="Admin Panel › should attempt login with test credentials" classname="admin.spec.js" time="3.518">
+</testcase>
+<testcase name="Admin Panel › Admin Dashboard (requires login) › should display dashboard statistics" classname="admin.spec.js" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin Panel › Admin Dashboard (requires login) › should display today bookings table" classname="admin.spec.js" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="booking.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="chromium" tests="6" failures="0" skipped="0" time="12.326" errors="0">
+<testcase name="Booking Flow › should load booking page" classname="booking.spec.js" time="0.917">
+</testcase>
+<testcase name="Booking Flow › should display calendar" classname="booking.spec.js" time="0.817">
+</testcase>
+<testcase name="Booking Flow › should select date and show available time slots" classname="booking.spec.js" time="3.211">
+</testcase>
+<testcase name="Booking Flow › should complete booking form and submit" classname="booking.spec.js" time="4.435">
+</testcase>
+<testcase name="Booking Flow › should validate required fields" classname="booking.spec.js" time="1.33">
+</testcase>
+<testcase name="Booking Flow › should switch language and display translations" classname="booking.spec.js" time="1.616">
+</testcase>
+</testsuite>
+<testsuite name="navigation.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="chromium" tests="5" failures="0" skipped="0" time="6.969" errors="0">
+<testcase name="Navigation › should navigate through all main pages" classname="navigation.spec.js" time="1.344">
+</testcase>
+<testcase name="Navigation › should display logo and navigation menu" classname="navigation.spec.js" time="0.961">
+</testcase>
+<testcase name="Navigation › should show mobile menu on small screens" classname="navigation.spec.js" time="1.31">
+</testcase>
+<testcase name="Language Switching › should switch between EST, ENG, RUS" classname="navigation.spec.js" time="1.995">
+</testcase>
+<testcase name="Language Switching › should persist language selection" classname="navigation.spec.js" time="1.359">
+</testcase>
+</testsuite>
+<testsuite name="spareparts.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="chromium" tests="6" failures="0" skipped="0" time="15.621" errors="0">
+<testcase name="Spare Parts Inquiry Flow › should load spare parts inquiry page" classname="spareparts.spec.js" time="0.932">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should display car makes dropdown" classname="spareparts.spec.js" time="3.025">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should load car models when make is selected" classname="spareparts.spec.js" time="2.035">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should complete spare parts inquiry form" classname="spareparts.spec.js" time="7.764">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should validate email format" classname="spareparts.spec.js" time="1.111">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should validate VIN code length" classname="spareparts.spec.js" time="0.754">
+</testcase>
+</testsuite>
+<testsuite name="admin.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="firefox" tests="5" failures="0" skipped="2" time="16.917" errors="0">
+<testcase name="Admin Panel › should display admin login page" classname="admin.spec.js" time="6.03">
+</testcase>
+<testcase name="Admin Panel › should show validation for empty credentials" classname="admin.spec.js" time="4.538">
+</testcase>
+<testcase name="Admin Panel › should attempt login with test credentials" classname="admin.spec.js" time="6.349">
+</testcase>
+<testcase name="Admin Panel › Admin Dashboard (requires login) › should display dashboard statistics" classname="admin.spec.js" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin Panel › Admin Dashboard (requires login) › should display today bookings table" classname="admin.spec.js" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="booking.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="firefox" tests="6" failures="0" skipped="0" time="33.503" errors="0">
+<testcase name="Booking Flow › should load booking page" classname="booking.spec.js" time="3.988">
+</testcase>
+<testcase name="Booking Flow › should display calendar" classname="booking.spec.js" time="3.929">
+</testcase>
+<testcase name="Booking Flow › should select date and show available time slots" classname="booking.spec.js" time="6.672">
+</testcase>
+<testcase name="Booking Flow › should complete booking form and submit" classname="booking.spec.js" time="8.881">
+</testcase>
+<testcase name="Booking Flow › should validate required fields" classname="booking.spec.js" time="5.348">
+</testcase>
+<testcase name="Booking Flow › should switch language and display translations" classname="booking.spec.js" time="4.685">
+</testcase>
+</testsuite>
+<testsuite name="navigation.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="firefox" tests="5" failures="0" skipped="0" time="21.872" errors="0">
+<testcase name="Navigation › should navigate through all main pages" classname="navigation.spec.js" time="4.849">
+</testcase>
+<testcase name="Navigation › should display logo and navigation menu" classname="navigation.spec.js" time="3.76">
+</testcase>
+<testcase name="Navigation › should show mobile menu on small screens" classname="navigation.spec.js" time="4.205">
+</testcase>
+<testcase name="Language Switching › should switch between EST, ENG, RUS" classname="navigation.spec.js" time="4.957">
+</testcase>
+<testcase name="Language Switching › should persist language selection" classname="navigation.spec.js" time="4.101">
+</testcase>
+</testsuite>
+<testsuite name="spareparts.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="firefox" tests="6" failures="0" skipped="0" time="42.97" errors="0">
+<testcase name="Spare Parts Inquiry Flow › should load spare parts inquiry page" classname="spareparts.spec.js" time="3.822">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should display car makes dropdown" classname="spareparts.spec.js" time="5.837">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should load car models when make is selected" classname="spareparts.spec.js" time="4.797">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should complete spare parts inquiry form" classname="spareparts.spec.js" time="10.215">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should validate email format" classname="spareparts.spec.js" time="13.337">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should validate VIN code length" classname="spareparts.spec.js" time="4.962">
+</testcase>
+</testsuite>
+<testsuite name="admin.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="webkit" tests="5" failures="0" skipped="2" time="8.119" errors="0">
+<testcase name="Admin Panel › should display admin login page" classname="admin.spec.js" time="1.549">
+</testcase>
+<testcase name="Admin Panel › should show validation for empty credentials" classname="admin.spec.js" time="2.297">
+</testcase>
+<testcase name="Admin Panel › should attempt login with test credentials" classname="admin.spec.js" time="4.273">
+</testcase>
+<testcase name="Admin Panel › Admin Dashboard (requires login) › should display dashboard statistics" classname="admin.spec.js" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin Panel › Admin Dashboard (requires login) › should display today bookings table" classname="admin.spec.js" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="booking.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="webkit" tests="6" failures="0" skipped="0" time="19.38" errors="0">
+<testcase name="Booking Flow › should load booking page" classname="booking.spec.js" time="1.573">
+</testcase>
+<testcase name="Booking Flow › should display calendar" classname="booking.spec.js" time="1.631">
+</testcase>
+<testcase name="Booking Flow › should select date and show available time slots" classname="booking.spec.js" time="4.002">
+</testcase>
+<testcase name="Booking Flow › should complete booking form and submit" classname="booking.spec.js" time="6.557">
+</testcase>
+<testcase name="Booking Flow › should validate required fields" classname="booking.spec.js" time="2.716">
+</testcase>
+<testcase name="Booking Flow › should switch language and display translations" classname="booking.spec.js" time="2.901">
+</testcase>
+</testsuite>
+<testsuite name="navigation.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="webkit" tests="5" failures="0" skipped="0" time="13.696" errors="0">
+<testcase name="Navigation › should navigate through all main pages" classname="navigation.spec.js" time="4.219">
+</testcase>
+<testcase name="Navigation › should display logo and navigation menu" classname="navigation.spec.js" time="1.716">
+</testcase>
+<testcase name="Navigation › should show mobile menu on small screens" classname="navigation.spec.js" time="2.136">
+</testcase>
+<testcase name="Language Switching › should switch between EST, ENG, RUS" classname="navigation.spec.js" time="3.155">
+</testcase>
+<testcase name="Language Switching › should persist language selection" classname="navigation.spec.js" time="2.47">
+</testcase>
+</testsuite>
+<testsuite name="spareparts.spec.js" timestamp="2025-10-06T00:18:29.656Z" hostname="webkit" tests="6" failures="0" skipped="0" time="20.437" errors="0">
+<testcase name="Spare Parts Inquiry Flow › should load spare parts inquiry page" classname="spareparts.spec.js" time="1.576">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should display car makes dropdown" classname="spareparts.spec.js" time="3.428">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should load car models when make is selected" classname="spareparts.spec.js" time="2.678">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should complete spare parts inquiry form" classname="spareparts.spec.js" time="8.692">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should validate email format" classname="spareparts.spec.js" time="2.196">
+</testcase>
+<testcase name="Spare Parts Inquiry Flow › should validate VIN code length" classname="spareparts.spec.js" time="1.867">
+</testcase>
+</testsuite>
+</testsuites>

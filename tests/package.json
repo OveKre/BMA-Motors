@@ -1,0 +1,18 @@
+{
+  "name": "bma-motors-tests",
+  "version": "1.0.0",
+  "description": "BMA Motors test suite using Playwright",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:booking": "playwright test tests/booking.spec.js",
+    "test:spareparts": "playwright test tests/spareparts.spec.js",
+    "test:admin": "playwright test tests/admin.spec.js",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.1"
+  }
+}

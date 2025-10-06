@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: bma_motors_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: bma_root_password_2025
+      MYSQL_DATABASE: bma_motors
+      MYSQL_USER: bma_admin
+      MYSQL_PASSWORD: bma_admin_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - ./logs/mysql:/var/log/mysql
+    networks:
+      - bma_network
+    command: --general-log=1 --general-log-file=/var/log/mysql/general.log
+
+  backend:
+    build: ./backend
+    container_name: bma_motors_backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_NAME: bma_motors
+      DB_USER: bma_admin
+      DB_PASSWORD: bma_admin_password
+    depends_on:
+      - mariadb
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./logs/backend:/app/logs
+    networks:
+      - bma_network
+
+  frontend:
+    build: ./frontend
+    container_name: bma_motors_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://localhost:5000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - bma_network
+    depends_on:
+      - backend
+
+volumes:
+  mariadb_data:
+
+networks:
+  bma_network:
+    driver: bridge
