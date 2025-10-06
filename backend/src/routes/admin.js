@@ -331,4 +331,129 @@ router.get('/logs', authenticate, authorize('admin'), asyncHandler(async (req, r
     });
 }));
 
+/**
+ * @route   GET /api/admin/sonumid
+ * @desc    Hangi kõik kontakti sõnumid
+ * @access  Private/Admin
+ */
+router.get('/sonumid', authenticate, authorize('admin', 'manager'), asyncHandler(async (req, res) => {
+    const { is_read, limit = 100, offset = 0 } = req.query;
+
+    let sql = 'SELECT * FROM contact_messages WHERE 1=1';
+    const params = [];
+
+    if (is_read !== undefined) {
+        sql += ' AND is_read = ?';
+        params.push(is_read === 'true' ? 1 : 0);
+    }
+
+    sql += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
+    params.push(parseInt(limit), parseInt(offset));
+
+    const messages = await query(sql, params);
+
+    // Hangi ka statistikat
+    const stats = await query(`
+        SELECT 
+            COUNT(*) as total,
+            SUM(CASE WHEN is_read = 0 THEN 1 ELSE 0 END) as unread,
+            SUM(CASE WHEN replied = 1 THEN 1 ELSE 0 END) as replied
+        FROM contact_messages
+    `);
+
+    res.json({
+        success: true,
+        data: messages,
+        count: messages.length,
+        stats: stats[0]
+    });
+}));
+
+/**
+ * @route   GET /api/admin/sonumid/:id
+ * @desc    Hangi üks sõnum ja märgi loetuks
+ * @access  Private/Admin
+ */
+router.get('/sonumid/:id', authenticate, authorize('admin', 'manager'), asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const messages = await query('SELECT * FROM contact_messages WHERE id = ?', [id]);
+
+    if (!messages || messages.length === 0) {
+        return res.status(404).json({
+            success: false,
+            message: 'Sõnumit ei leitud'
+        });
+    }
+
+    // Märgi loetuks
+    await query('UPDATE contact_messages SET is_read = TRUE WHERE id = ?', [id]);
+
+    res.json({
+        success: true,
+        data: messages[0]
+    });
+}));
+
+/**
+ * @route   PUT /api/admin/sonumid/:id
+ * @desc    Uuenda sõnumi staatust
+ * @access  Private/Admin
+ */
+router.put('/sonumid/:id', authenticate, authorize('admin', 'manager'), asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { is_read, replied } = req.body;
+
+    const updates = [];
+    const params = [];
+
+    if (is_read !== undefined) {
+        updates.push('is_read = ?');
+        params.push(is_read ? 1 : 0);
+    }
+
+    if (replied !== undefined) {
+        updates.push('replied = ?');
+        params.push(replied ? 1 : 0);
+    }
+
+    if (updates.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'Ei ole midagi uuendada'
+        });
+    }
+
+    params.push(id);
+
+    await query(
+        `UPDATE contact_messages SET ${updates.join(', ')} WHERE id = ?`,
+        params
+    );
+
+    const messages = await query('SELECT * FROM contact_messages WHERE id = ?', [id]);
+
+    res.json({
+        success: true,
+        data: messages[0],
+        message: 'Sõnum uuendatud'
+    });
+}));
+
+/**
+ * @route   DELETE /api/admin/sonumid/:id
+ * @desc    Kustuta sõnum
+ * @access  Private/Admin
+ */
+router.delete('/sonumid/:id', authenticate, authorize('admin'), asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    await query('DELETE FROM contact_messages WHERE id = ?', [id]);
+
+    res.json({
+        success: true,
+        message: 'Sõnum kustutatud'
+    });
+}));
+
 module.exports = router;

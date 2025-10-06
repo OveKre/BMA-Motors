@@ -13,10 +13,14 @@ function AdminDashboard() {
   });
   const [bookings, setBookings] = useState([]);
   const [inquiries, setInquiries] = useState([]);
-  const [activeTab, setActiveTab] = useState('bookings'); // 'bookings' or 'inquiries'
+  const [messages, setMessages] = useState([]);
+  const [messageStats, setMessageStats] = useState({ total: 0, unread: 0, replied: 0 });
+  const [activeTab, setActiveTab] = useState('bookings'); // 'bookings', 'inquiries', or 'messages'
   const [loading, setLoading] = useState(true);
   const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const [selectedMessage, setSelectedMessage] = useState(null);
   const [showResponseModal, setShowResponseModal] = useState(false);
+  const [showMessageModal, setShowMessageModal] = useState(false);
   const [responseData, setResponseData] = useState({
     price: '',
     availability: '',
@@ -61,6 +65,19 @@ function AdminDashboard() {
       const inquiriesResponse = await api.get('/admin/paringud');
       console.log('Inquiries response:', inquiriesResponse.data);
       setInquiries(inquiriesResponse.data?.data || inquiriesResponse.data || []);
+
+      // Fetch messages
+      const messagesResponse = await api.get('/admin/sonumid');
+      console.log('Messages response:', messagesResponse.data);
+      setMessages(messagesResponse.data?.data || messagesResponse.data || []);
+      const msgStats = messagesResponse.data?.stats || { total: 0, unread: 0, replied: 0 };
+      setMessageStats(msgStats);
+      
+      // Update stats with actual message count
+      setStats(prevStats => ({
+        ...prevStats,
+        totalMessages: msgStats.unread || msgStats.total || 0
+      }));
 
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -149,6 +166,51 @@ function AdminDashboard() {
     }
   };
 
+  const openMessageModal = async (message) => {
+    setSelectedMessage(message);
+    setShowMessageModal(true);
+    
+    // Märgi loetuks kui pole veel loetud
+    if (!message.is_read) {
+      try {
+        await api.get(`/admin/sonumid/${message.id}`);
+        fetchDashboardData(); // Refresh to update unread count
+      } catch (error) {
+        console.error('Error marking message as read:', error);
+      }
+    }
+  };
+
+  const closeMessageModal = () => {
+    setShowMessageModal(false);
+    setSelectedMessage(null);
+  };
+
+  const markMessageAsReplied = async (messageId) => {
+    try {
+      await api.put(`/admin/sonumid/${messageId}`, { replied: true });
+      toast.success('Sõnum märgitud vastatuks');
+      fetchDashboardData();
+    } catch (error) {
+      toast.error('Viga sõnumi uuendamisel');
+    }
+  };
+
+  const deleteMessage = async (messageId) => {
+    if (!window.confirm('Kas oled kindel, et soovid sõnumi kustutada?')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/admin/sonumid/${messageId}`);
+      toast.success('Sõnum kustutatud');
+      closeMessageModal();
+      fetchDashboardData();
+    } catch (error) {
+      toast.error('Viga sõnumi kustutamisel');
+    }
+  };
+
   const getStatusColor = (status) => {
     const colors = {
       'pending': 'bg-yellow-100 text-yellow-800',
@@ -231,6 +293,21 @@ function AdminDashboard() {
               }`}
             >
               Varuosapäringud ({inquiries.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('messages')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm relative ${
+                activeTab === 'messages'
+                  ? 'border-primary-600 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Sõnumid ({messages.length})
+              {messageStats.unread > 0 && (
+                <span className="ml-2 px-2 py-0.5 text-xs bg-red-500 text-white rounded-full">
+                  {messageStats.unread}
+                </span>
+              )}
             </button>
           </nav>
         </div>
@@ -403,6 +480,91 @@ function AdminDashboard() {
           </div>
         )}
 
+        {/* Messages Table */}
+        {activeTab === 'messages' && (
+          <div className="card">
+            <div>
+              <h2 className="text-xl font-semibold mb-4">Kliendi Sõnumid</h2>
+              <div className="flex gap-4 mb-4 text-sm">
+                <span className="text-gray-600">Kokku: {messageStats.total}</span>
+                <span className="text-red-600 font-semibold">Lugemata: {messageStats.unread}</span>
+                <span className="text-green-600">Vastatud: {messageStats.replied}</span>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="text-left py-3 px-4">Staatus</th>
+                      <th className="text-left py-3 px-4">Nimi</th>
+                      <th className="text-left py-3 px-4">Email</th>
+                      <th className="text-left py-3 px-4">Telefon</th>
+                      <th className="text-left py-3 px-4">Teema</th>
+                      <th className="text-left py-3 px-4">Kuupäev</th>
+                      <th className="text-left py-3 px-4">Toimingud</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {messages.length === 0 ? (
+                      <tr>
+                        <td colSpan="7" className="text-center py-8 text-gray-500">
+                          Sõnumeid ei leitud
+                        </td>
+                      </tr>
+                    ) : (
+                      messages.map((message) => (
+                        <tr 
+                          key={message.id} 
+                          className={`border-b hover:bg-gray-50 ${!message.is_read ? 'bg-blue-50' : ''}`}
+                        >
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-2">
+                              {!message.is_read && (
+                                <span className="w-2 h-2 bg-blue-500 rounded-full" title="Lugemata"></span>
+                              )}
+                              {message.replied && (
+                                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                                  Vastatud
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 font-medium">
+                            {message.name || '-'}
+                          </td>
+                          <td className="py-3 px-4">
+                            <a href={`mailto:${message.email}`} className="text-blue-600 hover:underline">
+                              {message.email || '-'}
+                            </a>
+                          </td>
+                          <td className="py-3 px-4">
+                            <a href={`tel:${message.phone}`} className="text-blue-600 hover:underline">
+                              {message.phone || '-'}
+                            </a>
+                          </td>
+                          <td className="py-3 px-4">
+                            {message.subject || '-'}
+                          </td>
+                          <td className="py-3 px-4">
+                            {message.created_at ? new Date(message.created_at).toLocaleDateString() : '-'}
+                          </td>
+                          <td className="py-3 px-4">
+                            <button
+                              onClick={() => openMessageModal(message)}
+                              className="px-3 py-1 bg-primary-600 text-white rounded hover:bg-primary-700 text-sm"
+                            >
+                              Vaata
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Response Modal */}
         {showResponseModal && selectedInquiry && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -529,6 +691,114 @@ function AdminDashboard() {
                     </button>
                   </div>
                 </form>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Message Modal */}
+        {showMessageModal && selectedMessage && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-2xl font-bold">Kliendi Sõnum</h2>
+                  <button
+                    onClick={closeMessageModal}
+                    className="text-gray-500 hover:text-gray-700 text-2xl"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                {/* Message Details */}
+                <div className="space-y-4">
+                  <div className="bg-gray-50 p-4 rounded">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <span className="text-sm text-gray-600">Nimi:</span>
+                        <p className="font-medium">{selectedMessage.name}</p>
+                      </div>
+                      <div>
+                        <span className="text-sm text-gray-600">Kuupäev:</span>
+                        <p className="font-medium">
+                          {new Date(selectedMessage.created_at).toLocaleString('et-EE')}
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-sm text-gray-600">Email:</span>
+                        <p className="font-medium">
+                          <a href={`mailto:${selectedMessage.email}`} className="text-blue-600 hover:underline">
+                            {selectedMessage.email}
+                          </a>
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-sm text-gray-600">Telefon:</span>
+                        <p className="font-medium">
+                          <a href={`tel:${selectedMessage.phone}`} className="text-blue-600 hover:underline">
+                            {selectedMessage.phone || '-'}
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {selectedMessage.subject && (
+                    <div>
+                      <span className="text-sm text-gray-600">Teema:</span>
+                      <p className="font-medium text-lg">{selectedMessage.subject}</p>
+                    </div>
+                  )}
+
+                  <div>
+                    <span className="text-sm text-gray-600">Sõnum:</span>
+                    <div className="mt-2 p-4 bg-gray-50 rounded border border-gray-200 whitespace-pre-wrap">
+                      {selectedMessage.message}
+                    </div>
+                  </div>
+
+                  {/* Status Badges */}
+                  <div className="flex gap-2">
+                    {selectedMessage.is_read && (
+                      <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+                        ✓ Loetud
+                      </span>
+                    )}
+                    {selectedMessage.replied && (
+                      <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                        ✓ Vastatud
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-between mt-6 gap-3">
+                  <div className="flex gap-3">
+                    {!selectedMessage.replied && (
+                      <a
+                        href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject || 'Teie päring'}`}
+                        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                        onClick={() => markMessageAsReplied(selectedMessage.id)}
+                      >
+                        📧 Vasta emailiga
+                      </a>
+                    )}
+                    <button
+                      onClick={() => deleteMessage(selectedMessage.id)}
+                      className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                    >
+                      🗑️ Kustuta
+                    </button>
+                  </div>
+                  <button
+                    onClick={closeMessageModal}
+                    className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
+                  >
+                    Sulge
+                  </button>
+                </div>
               </div>
             </div>
           </div>

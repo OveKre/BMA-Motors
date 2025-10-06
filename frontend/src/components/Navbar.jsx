@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import logo from '../images/BMA Logo.jpg';
 
 function Navbar() {
   const { t, i18n } = useTranslation();
@@ -16,7 +17,11 @@ function Navbar() {
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-primary-600">BMA MOTORS</span>
+              <img 
+                src={logo} 
+                alt="BMA MOTORS" 
+                className="h-40 w-auto object-contain"
+              />
             </Link>
           </div>
 
