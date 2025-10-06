@@ -1,0 +1,98 @@
+/* Custom calendar styling for booking page */
+
+/* Fully booked dates - red */
+.booking-calendar .fully-booked {
+  background-color: #fecaca !important; /* red-200 */
+  color: #991b1b !important; /* red-800 */
+  font-weight: 600;
+}
+
+.booking-calendar .fully-booked:hover {
+  background-color: #fca5a5 !important; /* red-300 */
+}
+
+.booking-calendar .fully-booked abbr {
+  color: #991b1b !important;
+}
+
+/* Mostly booked (>70%) - orange */
+.booking-calendar .mostly-booked {
+  background-color: #fed7aa !important; /* orange-200 */
+  color: #c2410c !important; /* orange-700 */
+  font-weight: 500;
+}
+
+.booking-calendar .mostly-booked:hover {
+  background-color: #fdba74 !important; /* orange-300 */
+}
+
+.booking-calendar .mostly-booked abbr {
+  color: #c2410c !important;
+}
+
+/* Partially booked (>50%) - yellow */
+.booking-calendar .partially-booked {
+  background-color: #fef08a !important; /* yellow-200 */
+  color: #a16207 !important; /* yellow-700 */
+  font-weight: 500;
+}
+
+.booking-calendar .partially-booked:hover {
+  background-color: #fde047 !important; /* yellow-300 */
+}
+
+.booking-calendar .partially-booked abbr {
+  color: #a16207 !important;
+}
+
+/* Disabled dates (past dates or fully booked) */
+.booking-calendar .react-calendar__tile:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.5;
+}
+
+.booking-calendar .react-calendar__tile:disabled.fully-booked {
+  background-color: #f87171 !important; /* red-400 */
+  color: #7f1d1d !important; /* red-900 */
+}
+
+/* Active/selected date */
+.booking-calendar .react-calendar__tile--active {
+  background-color: #3b82f6 !important; /* blue-500 */
+  color: white !important;
+}
+
+.booking-calendar .react-calendar__tile--active:hover {
+  background-color: #2563eb !important; /* blue-600 */
+}
+
+/* Today's date */
+.booking-calendar .react-calendar__tile--now {
+  background-color: #dbeafe !important; /* blue-100 */
+  font-weight: 600;
+}
+
+.booking-calendar .react-calendar__tile--now:hover {
+  background-color: #bfdbfe !important; /* blue-200 */
+}
+
+/* Ensure calendar is centered and has proper spacing */
+.booking-calendar {
+  margin: 0 auto;
+  max-width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .booking-calendar {
+    font-size: 0.875rem;
+  }
+  
+  .booking-calendar .react-calendar__tile {
+    padding: 0.5rem;
+  }
+}

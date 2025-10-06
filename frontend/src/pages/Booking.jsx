@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -6,11 +6,14 @@ import { toast } from 'react-toastify';
 import api from '../api/axios';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import './Booking.css';
 
 function Booking() {
   const { t, i18n } = useTranslation();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [availableSlots, setAvailableSlots] = useState([]);
+  const [bookedSlots, setBookedSlots] = useState([]);
+  const [monthAvailability, setMonthAvailability] = useState({});
   const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
@@ -50,6 +53,30 @@ function Booking() {
     },
   });
 
+  // Fetch month availability when component mounts or month changes
+  useEffect(() => {
+    fetchMonthAvailability(selectedDate);
+  }, [selectedDate.getMonth(), selectedDate.getFullYear()]);
+
+  // Fetch slots for initial date
+  useEffect(() => {
+    fetchAvailableSlots(selectedDate);
+  }, []);
+
+  const fetchMonthAvailability = async (date) => {
+    try {
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; // JavaScript months are 0-indexed
+      const response = await api.get(`/booking/month-availability?year=${year}&month=${month}`);
+      
+      if (response.data.success) {
+        setMonthAvailability(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching month availability:', error);
+    }
+  };
+
   const fetchAvailableSlots = async (date) => {
     try {
       const formattedDate = date.toISOString().split('T')[0];
@@ -58,25 +85,29 @@ function Booking() {
       
       // Handle different response formats
       const slots = response.data.data?.availableSlots || response.data.availableSlots || [];
+      const booked = response.data.data?.bookedSlots || [];
       
       // If no slots from backend, use default slots
-      if (slots.length === 0) {
+      if (slots.length === 0 && booked.length === 0) {
         const defaultSlots = [
           '09:00', '10:00', '11:00', '12:00',
-          '13:00', '14:00', '15:00', '16:00'
+          '13:00', '14:00', '15:00', '16:00', '17:00'
         ];
         setAvailableSlots(defaultSlots);
+        setBookedSlots([]);
       } else {
         setAvailableSlots(slots);
+        setBookedSlots(booked);
       }
     } catch (error) {
       console.error('Error fetching slots:', error);
       // Use default slots on error
       const defaultSlots = [
         '09:00', '10:00', '11:00', '12:00',
-        '13:00', '14:00', '15:00', '16:00'
+        '13:00', '14:00', '15:00', '16:00', '17:00'
       ];
       setAvailableSlots(defaultSlots);
+      setBookedSlots([]);
     }
   };
 
@@ -84,6 +115,52 @@ function Booking() {
     setSelectedDate(date);
     formik.setFieldValue('booking_date', date.toISOString().split('T')[0]);
     fetchAvailableSlots(date);
+  };
+
+  // Custom tile className for calendar
+  const getTileClassName = ({ date, view }) => {
+    if (view !== 'month') return null;
+    
+    const dateStr = date.toISOString().split('T')[0];
+    const availability = monthAvailability[dateStr];
+    
+    if (!availability) return null;
+    
+    // Kui kõik ajad broneeritud - punane
+    if (availability.isFull) {
+      return 'fully-booked';
+    }
+    
+    // Kui üle 70% broneeritud - oranž
+    if (availability.availabilityPercentage < 30) {
+      return 'mostly-booked';
+    }
+    
+    // Kui alla 50% vaba - kollane
+    if (availability.availabilityPercentage < 50) {
+      return 'partially-booked';
+    }
+    
+    return null;
+  };
+
+  // Disable fully booked dates
+  const tileDisabled = ({ date, view }) => {
+    if (view !== 'month') return false;
+    
+    const dateStr = date.toISOString().split('T')[0];
+    const availability = monthAvailability[dateStr];
+    
+    return availability?.isFull || false;
+  };
+
+  // Generate all possible time slots
+  const getAllTimeSlots = () => {
+    const slots = [];
+    for (let hour = 9; hour < 18; hour++) {
+      slots.push(`${hour.toString().padStart(2, '0')}:00`);
+    }
+    return slots;
   };
 
   return (
@@ -102,34 +179,67 @@ function Booking() {
                 onChange={handleDateChange}
                 value={selectedDate}
                 minDate={new Date()}
-                className="mx-auto"
+                className="mx-auto booking-calendar"
+                tileClassName={getTileClassName}
+                tileDisabled={tileDisabled}
               />
+              
+              {/* Legend */}
+              <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-red-500 rounded"></div>
+                  <span>Kõik ajad broneeritud</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-orange-400 rounded"></div>
+                  <span>Vähe kohti</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-yellow-300 rounded"></div>
+                  <span>Poolik</span>
+                </div>
+              </div>
             </div>
 
             {/* Time Slots */}
-            {availableSlots.length > 0 && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Vali aeg
-                </label>
-                <div className="grid grid-cols-4 gap-2">
-                  {availableSlots.map((slot) => (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Vali aeg
+              </label>
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+                {getAllTimeSlots().map((slot) => {
+                  const isBooked = bookedSlots.includes(slot);
+                  const isAvailable = availableSlots.includes(slot);
+                  const isSelected = formik.values.booking_time === slot;
+                  
+                  return (
                     <button
                       key={slot}
                       type="button"
-                      onClick={() => formik.setFieldValue('booking_time', slot)}
-                      className={`p-2 rounded ${
-                        formik.values.booking_time === slot
-                          ? 'bg-primary-600 text-white'
-                          : 'bg-gray-100 hover:bg-gray-200'
+                      onClick={() => !isBooked && formik.setFieldValue('booking_time', slot)}
+                      disabled={isBooked}
+                      className={`p-3 rounded font-medium transition-all ${
+                        isSelected
+                          ? 'bg-primary-600 text-white ring-2 ring-primary-300'
+                          : isBooked
+                          ? 'bg-red-100 text-red-600 cursor-not-allowed line-through'
+                          : isAvailable
+                          ? 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-300'
+                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       }`}
+                      title={isBooked ? 'Broneeritud' : isAvailable ? 'Vaba' : 'Pole saadaval'}
                     >
                       {slot}
                     </button>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
-            )}
+              {bookedSlots.length > 0 && (
+                <p className="text-sm text-gray-600 mt-2">
+                  ⚠️ Punased ajad on juba broneeritud
+                </p>
+              )}
+            </div>
 
             {/* Contact Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

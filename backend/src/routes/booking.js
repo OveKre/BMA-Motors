@@ -23,13 +23,38 @@ router.get('/available-slots', asyncHandler(async (req, res) => {
     }
 
     const availableSlots = await Booking.getAvailableSlots(date);
+    const bookedSlots = await Booking.getBookedSlots(date);
 
     res.json({
         success: true,
         data: {
             date,
-            availableSlots
+            availableSlots,
+            bookedSlots
         }
+    });
+}));
+
+/**
+ * @route   GET /api/booking/month-availability
+ * @desc    Hangi kuu kõigi kuupäevade saadavus (kalendri jaoks)
+ * @access  Public
+ */
+router.get('/month-availability', asyncHandler(async (req, res) => {
+    const { year, month } = req.query;
+
+    if (!year || !month) {
+        return res.status(400).json({
+            success: false,
+            error: { message: 'Aasta ja kuu on kohustuslikud' }
+        });
+    }
+
+    const availability = await Booking.getMonthAvailability(parseInt(year), parseInt(month));
+
+    res.json({
+        success: true,
+        data: availability
     });
 }));
 

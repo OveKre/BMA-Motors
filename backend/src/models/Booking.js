@@ -181,6 +181,75 @@ class Booking {
     }
 
     /**
+     * Hangi broneeritud ajad konkreetsel kuupäeval
+     */
+    static async getBookedSlots(date) {
+        const bookedSlots = await query(
+            `SELECT booking_time FROM bookings 
+             WHERE booking_date = ? AND status != 'cancelled'`,
+            [date]
+        );
+
+        // Normaliseeri aja formaat (eemalda sekundid kui olemas)
+        return bookedSlots.map(slot => {
+            const time = slot.booking_time;
+            // Kui formaat on HH:MM:SS, siis tagasta ainult HH:MM
+            return time.length > 5 ? time.substring(0, 5) : time;
+        });
+    }
+
+    /**
+     * Hangi kuu kõigi kuupäevade saadavus (kalendri jaoks)
+     */
+    static async getMonthAvailability(year, month) {
+        // Määra kuu esimene ja viimane päev
+        const firstDay = new Date(year, month - 1, 1);
+        const lastDay = new Date(year, month, 0);
+        
+        const startDate = firstDay.toISOString().split('T')[0];
+        const endDate = lastDay.toISOString().split('T')[0];
+
+        // Hangi kõik broneeringud selle kuu kohta
+        const bookings = await query(
+            `SELECT booking_date, COUNT(*) as booked_count 
+             FROM bookings 
+             WHERE booking_date BETWEEN ? AND ? 
+             AND status != 'cancelled'
+             GROUP BY booking_date`,
+            [startDate, endDate]
+        );
+
+        // Tööpäeva ajad (9 tundi)
+        const totalSlotsPerDay = 9; // 09:00-18:00
+
+        // Loo saadavuse objekt
+        const availability = {};
+        bookings.forEach(booking => {
+            // Normaliseeri kuupäeva formaat YYYY-MM-DD
+            let dateStr;
+            if (booking.booking_date instanceof Date) {
+                dateStr = booking.booking_date.toISOString().split('T')[0];
+            } else {
+                // Kui juba string, jäta samaks
+                dateStr = booking.booking_date.toString().split('T')[0];
+            }
+            
+            const bookedCount = booking.booked_count;
+            const availableCount = totalSlotsPerDay - bookedCount;
+            
+            availability[dateStr] = {
+                total: totalSlotsPerDay,
+                booked: bookedCount,
+                available: availableCount,
+                isFull: availableCount === 0,
+                availabilityPercentage: Math.round((availableCount / totalSlotsPerDay) * 100)
+            };
+        });
+
+        return availability;
+    }
+
+    /**
      * Uuenda broneeringut
      */
     static async update(id, bookingData) {
