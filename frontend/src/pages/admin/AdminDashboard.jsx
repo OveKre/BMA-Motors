@@ -15,6 +15,14 @@ function AdminDashboard() {
   const [inquiries, setInquiries] = useState([]);
   const [activeTab, setActiveTab] = useState('bookings'); // 'bookings' or 'inquiries'
   const [loading, setLoading] = useState(true);
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [responseData, setResponseData] = useState({
+    price: '',
+    availability: '',
+    delivery_time: '',
+    additional_info: ''
+  });
 
   useEffect(() => {
     // Check if user is logged in
@@ -107,6 +115,37 @@ function AdminDashboard() {
       fetchDashboardData();
     } catch (error) {
       toast.error('Viga päringu uuendamisel');
+    }
+  };
+
+  const openResponseModal = (inquiry) => {
+    setSelectedInquiry(inquiry);
+    setShowResponseModal(true);
+    setResponseData({
+      price: '',
+      availability: '',
+      delivery_time: '',
+      additional_info: ''
+    });
+  };
+
+  const closeResponseModal = () => {
+    setShowResponseModal(false);
+    setSelectedInquiry(null);
+  };
+
+  const handleResponseSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      await api.post(`/admin/paringud/${selectedInquiry.id}/vastus`, responseData);
+      
+      toast.success('Vastus edukalt saadetud!');
+      closeResponseModal();
+      fetchDashboardData();
+    } catch (error) {
+      console.error('Error sending response:', error);
+      toast.error('Viga vastuse saatmisel');
     }
   };
 
@@ -297,12 +336,13 @@ function AdminDashboard() {
                     <th className="text-left py-3 px-4">Varuosa</th>
                     <th className="text-left py-3 px-4">Kuupäev</th>
                     <th className="text-left py-3 px-4">Staatus</th>
+                    <th className="text-left py-3 px-4">Toimingud</th>
                   </tr>
                 </thead>
                 <tbody>
                   {inquiries.length === 0 ? (
                     <tr>
-                      <td colSpan="7" className="text-center py-8 text-gray-500">
+                      <td colSpan="8" className="text-center py-8 text-gray-500">
                         Päringuid ei leitud
                       </td>
                     </tr>
@@ -346,11 +386,150 @@ function AdminDashboard() {
                             <option value="6">Tühistatud</option>
                           </select>
                         </td>
+                        <td className="py-3 px-4">
+                          <button
+                            onClick={() => openResponseModal(inquiry)}
+                            className="px-3 py-1 bg-primary-600 text-white rounded hover:bg-primary-700 text-sm"
+                          >
+                            Vasta
+                          </button>
+                        </td>
                       </tr>
                     ))
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {/* Response Modal */}
+        {showResponseModal && selectedInquiry && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-2xl font-bold">Vasta varuosapäringule</h2>
+                  <button
+                    onClick={closeResponseModal}
+                    className="text-gray-500 hover:text-gray-700 text-2xl"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                {/* Inquiry Details */}
+                <div className="bg-gray-50 p-4 rounded mb-6">
+                  <h3 className="font-semibold mb-2">Päringu detailid</h3>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-gray-600">Klient:</span>
+                      <p className="font-medium">{selectedInquiry.client_name}</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Email:</span>
+                      <p className="font-medium">{selectedInquiry.client_email}</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Telefon:</span>
+                      <p className="font-medium">{selectedInquiry.client_phone}</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Auto:</span>
+                      <p className="font-medium">
+                        {selectedInquiry.car_make} {selectedInquiry.car_model} ({selectedInquiry.car_year})
+                      </p>
+                    </div>
+                    <div className="col-span-2">
+                      <span className="text-gray-600">Varuosa:</span>
+                      <p className="font-medium">{selectedInquiry.sparepart_name}</p>
+                      {selectedInquiry.sparepart_description && (
+                        <p className="text-gray-600 text-xs mt-1">{selectedInquiry.sparepart_description}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Response Form */}
+                <form onSubmit={handleResponseSubmit}>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Hind (€)
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={responseData.price}
+                        onChange={(e) => setResponseData({ ...responseData, price: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-primary-500 focus:border-primary-500"
+                        placeholder="99.99"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Saadavus
+                      </label>
+                      <select
+                        value={responseData.availability}
+                        onChange={(e) => setResponseData({ ...responseData, availability: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-primary-500 focus:border-primary-500"
+                        required
+                      >
+                        <option value="">Vali saadavus</option>
+                        <option value="in_stock">Laos</option>
+                        <option value="order_needed">Tellimisel</option>
+                        <option value="unavailable">Ei ole saadaval</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Tarneaeg
+                      </label>
+                      <input
+                        type="text"
+                        value={responseData.delivery_time}
+                        onChange={(e) => setResponseData({ ...responseData, delivery_time: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-primary-500 focus:border-primary-500"
+                        placeholder="nt: 2-3 tööpäeva"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Lisainfo
+                      </label>
+                      <textarea
+                        value={responseData.additional_info}
+                        onChange={(e) => setResponseData({ ...responseData, additional_info: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-primary-500 focus:border-primary-500"
+                        rows="4"
+                        placeholder="Lisainfo kliendile..."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end gap-3 mt-6">
+                    <button
+                      type="button"
+                      onClick={closeResponseModal}
+                      className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
+                    >
+                      Tühista
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700"
+                    >
+                      Saada vastus
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         )}

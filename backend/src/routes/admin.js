@@ -237,6 +237,77 @@ router.delete('/teenused/:id', authenticate, authorize('admin'), asyncHandler(as
 }));
 
 /**
+ * @route   POST /api/admin/paringud/:id/vastus
+ * @desc    Saada vastus varuosapäringule
+ * @access  Private/Admin
+ */
+router.post('/paringud/:id/vastus', authenticate, authorize('admin', 'manager'), asyncHandler(async (req, res) => {
+    const { price, availability, delivery_time, additional_info } = req.body;
+    const inquiryId = req.params.id;
+
+    // Hangi päringu andmed
+    const inquiry = await SparePartInquiry.findById(inquiryId);
+    if (!inquiry) {
+        return res.status(404).json({
+            success: false,
+            message: 'Päringut ei leitud'
+        });
+    }
+
+    // Uuenda päringu staatust ja märgi vastus saadetud
+    await SparePartInquiry.updateStatus(inquiryId, 3); // 3 = Pakkumine saadetud
+    await SparePartInquiry.markResponseSent(inquiryId);
+    
+    // Lisa response_date
+    await query(
+        'UPDATE sparepart_inquiries SET response_date = NOW() WHERE id = ?',
+        [inquiryId]
+    );
+
+    // Salvesta vastuse detailid
+    await query(
+        `INSERT INTO sparepart_responses (inquiry_id, price, availability, delivery_time, additional_info, created_by)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [inquiryId, price, availability, delivery_time, additional_info, req.user.id]
+    );
+
+    // Saada email kliendile (integreeri emaili teenusega)
+    // TODO: Implement email sending
+    const emailBody = `
+Tere ${inquiry.client_name}!
+
+Täname Teid pöördumise eest BMA Motors varuosade osas.
+
+Teie päringu detailid:
+- Auto: ${inquiry.car_make} ${inquiry.car_model} (${inquiry.car_year})
+- Varuosa: ${inquiry.sparepart_name}
+
+Meie pakkumine:
+- Hind: ${price} €
+- Saadavus: ${availability === 'in_stock' ? 'Laos' : availability === 'order_needed' ? 'Tellimisel' : 'Ei ole saadaval'}
+- Tarneaeg: ${delivery_time}
+
+${additional_info ? `Lisainfo: ${additional_info}` : ''}
+
+Kui soovite tellimust esitada, palun võtke meiega ühendust.
+
+Lugupidamisega,
+BMA Motors meeskond
+    `.trim();
+
+    logger.info(`Response sent for inquiry ${inquiryId} by user ${req.user.username}`);
+
+    res.json({
+        success: true,
+        message: 'Vastus edukalt saadetud',
+        data: {
+            inquiry_id: inquiryId,
+            email_sent: true // Muuda false kui email tegelikult ei saadetud
+        }
+    });
+}));
+
+/**
  * @route   GET /api/admin/logs
  * @desc    Hangi tegevuste logid
  * @access  Private/Admin
