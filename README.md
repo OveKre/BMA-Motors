@@ -66,7 +66,6 @@ BMA_MOTORS/
 │   │   │   ├── database.js    # Andmebaasi ühendus
 │   │   │   ├── email.js       # E-maili seaded
 │   │   │   └── logger.js      # Winston logger
-│   │   ├── controllers/       # Äriloogika (tulevikus)
 │   │   ├── middleware/        # Express middleware
 │   │   │   ├── auth.js        # JWT autentimine
 │   │   │   ├── errorHandler.js
@@ -77,6 +76,7 @@ BMA_MOTORS/
 │   │   │   ├── Client.js
 │   │   │   ├── Service.js
 │   │   │   ├── SparePartInquiry.js
+│   │   │   ├── SparePartsCategory.js
 │   │   │   └── SparePartStatus.js
 │   │   ├── routes/            # API marsruudid
 │   │   │   ├── admin.js
@@ -87,11 +87,17 @@ BMA_MOTORS/
 │   │   │   ├── services.js
 │   │   │   └── spareParts.js
 │   │   ├── utils/
-│   │   │   └── importCarData.js  # CarQuery API import
+│   │   │   ├── importCarData.js        # CarQuery API import
+│   │   │   └── generatePasswordHash.js # Parooli generaator
 │   │   └── server.js          # Serveri käivitus
+│   ├── logs/                   # Winston logifailid
+│   ├── import_carquery.js      # CarQuery andmete import
+│   ├── import_nhtsa.js         # NHTSA andmete import
+│   ├── test_login.js           # Login testimise skript
 │   ├── package.json
 │   ├── Dockerfile
-│   └── .env.example
+│   ├── .env.example
+│   └── README.md
 │
 ├── frontend/                   # React rakendus
 │   ├── src/
@@ -104,25 +110,39 @@ BMA_MOTORS/
 │   │   │   ├── Home.jsx
 │   │   │   ├── Services.jsx
 │   │   │   ├── Booking.jsx
+│   │   │   ├── Booking.css
 │   │   │   ├── SpareParts.jsx
 │   │   │   ├── Gallery.jsx
 │   │   │   ├── Contact.jsx
 │   │   │   └── admin/
 │   │   │       ├── AdminLogin.jsx
 │   │   │       └── AdminDashboard.jsx
+│   │   ├── images/
+│   │   │   └── BMA Logo.jpg   # BMA Motors logo
 │   │   ├── i18n.js            # Mitmekeelsus
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   └── index.css
+│   ├── index.html
 │   ├── package.json
 │   ├── vite.config.js
 │   ├── tailwind.config.js
-│   └── Dockerfile
+│   ├── postcss.config.js
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
+│   ├── Dockerfile
+│   ├── .env.example
+│   └── README.md
 │
 ├── database/                   # Andmebaasi skriptid
 │   ├── init.sql               # Skeema loomine
 │   ├── seed.sql               # Algandmed
 │   └── README.md
+│
+├── docs/                       # Projektidokumentatsioon
+│   └── PROJECT_DOCUMENTATION.md  # Infosüsteemi projektidok
+│
+├── logs/                       # Rakenduse logifailid
 │
 ├── tests/                      # Playwright testid
 │   ├── playwright/
@@ -131,11 +151,25 @@ BMA_MOTORS/
 │   │       ├── spareparts.spec.js
 │   │       ├── admin.spec.js
 │   │       └── navigation.spec.js
+│   ├── playwright-report/     # HTML testiraportid
+│   ├── test-results/          # Testi tulemused
 │   ├── playwright.config.js
 │   ├── package.json
+│   ├── test-results.json
+│   ├── test-results.xml
+│   ├── TESTIDE_TULEMUSED.md   # Eestikeelne testiraport
 │   └── README.md
 │
 ├── docker-compose.yml          # Docker orkestreerimine
+├── setup.sh                    # Linux/Mac setup skript
+├── setup.ps1                   # Windows PowerShell setup skript
+├── .gitignore                  # Git ignore reeglid
+├── CHANGELOG.md                # Versioonide muutused
+├── CONTRIBUTING.md             # Panustamise juhend
+├── KIIRKÄIVITUS.md             # Kiire alustamise juhend
+├── LICENSE                     # MIT litsents
+├── PROJEKTI_KOKKUVÕTE.md       # Projekti kokkuvõte
+├── TODO.md                     # Tulevased ülesanded
 └── README.md                   # See fail
 ```
 
