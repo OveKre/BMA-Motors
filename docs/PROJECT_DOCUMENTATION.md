@@ -1,8 +1,6 @@
 # BMA MOTORS - Auto Repair Shop Management System
 ## Project Design and Analysis Documentation
 
----
-
 ## 1. Introduction
 
 ### 1.1 Project Purpose and Scope
