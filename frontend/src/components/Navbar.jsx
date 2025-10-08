@@ -16,11 +16,15 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center bg-white px-4 py-2 rounded">
               <img 
                 src={logo} 
                 alt="BMA MOTORS" 
                 className="h-40 w-auto object-contain"
+                style={{
+                  filter: 'brightness(1.2) contrast(1.1)',
+                  mixBlendMode: 'multiply'
+                }}
               />
             </Link>
           </div>
