@@ -191,14 +191,14 @@ When a user visits the car repair company website for the first time, they shoul
 
 ### Acceptance Criteria
 
-Given user visits the car repair company homepage
-When the page loads
-Then user sees the company logo and main headline "Professionaalne autoremondi töökoda"
-And user sees company credibility statistics
-And user sees "Vaata teenuseid" and "Broneeri aeg" buttons prominently
-And navigation menu contains all main sections (Avaleht, Teenused, Broneerimime, Galerii, Värvisotsraring, Kontakt)
-And language options (EST, ENG, РУС) are visible and functional
-And user can easily access service information and contact details
+- Given user visits the car repair company homepage
+- When the page loads
+- Then user sees the company logo and main headline "Professionaalne autoremondi töökoda"
+- And user sees company credibility statistics
+- And user sees "Vaata teenuseid" and "Broneeri aeg" buttons prominently
+- And navigation menu contains all main sections (Avaleht, Teenused, Broneerimime, Galerii, Värvisotsraring, Kontakt)
+- And language options (EST, ENG, РУС) are visible and functional
+- And user can easily access service information and contact details
 
 ---
 
@@ -281,16 +281,16 @@ When a user navigates to the Services page, they should see:
 
 ### Acceptance Criteria
 
-Given user navigates to the Services page
-When the page loads
-Then user sees all active services displayed
-And services are organized by categories (Engine Repair, Diagnostics, Electrical Work, Brake System, etc.)
-And each service shows name in selected language, detailed description, price in EUR, and estimated duration
-And services are grouped by categories with clear labels and visual separation
-And all service names and descriptions are displayed in selected language (EST/ENG/РУС)
-And pricing currency format matches locale
-And user sees "Broneeri" (Book) button for each service
-And clicking the button redirects to booking page with service pre-selected
+- Given user navigates to the Services page
+- When the page loads
+- Then user sees all active services displayed
+- And services are organized by categories (Engine Repair, Diagnostics, Electrical Work, Brake System, etc.)
+- And each service shows name in selected language, detailed description, price in EUR, and estimated duration
+- And services are grouped by categories with clear labels and visual separation
+- And all service names and descriptions are displayed in selected language (EST/ENG/РУС)
+- And pricing currency format matches locale
+- And user sees "Broneeri" (Book) button for each service
+- And clicking the button redirects to booking page with service pre-selected
 
 ---
 
@@ -374,19 +374,19 @@ When a customer wants to book a service, they should:
 
 ### Acceptance Criteria
 
-Given customer is on the booking page
-When the page loads
-Then customer sees a calendar with current month and dates are color-coded (green=available, yellow=partially booked, red=fully booked)
-And customer can navigate between months
-And when customer clicks on an available date, the date is selected and highlighted
-And available time slots for that date are displayed below in 30-minute intervals (e.g., 09:00, 09:30, 10:00)
-And fully booked dates and already booked time slots are not clickable/disabled
-And customer fills in required fields (full name, email, phone, car make and model, service type, additional description optional)
-And all fields have validation with proper error messages for invalid fields
-And when customer submits valid booking form, customer sees success message
-And customer receives confirmation email
-And booking is saved with "pending" status
-And admin receives notification
+- Given customer is on the booking page
+- When the page loads
+- Then customer sees a calendar with current month and dates are color-coded (green=available, yellow=partially booked, red=fully booked)
+- And customer can navigate between months
+- And when customer clicks on an available date, the date is selected and highlighted
+- And available time slots for that date are displayed below in 30-minute intervals (e.g., 09:00, 09:30, 10:00)
+- And fully booked dates and already booked time slots are not clickable/disabled
+- And customer fills in required fields (full name, email, phone, car make and model, service type, additional description optional)
+- And all fields have validation with proper error messages for invalid fields
+- And when customer submits valid booking form, customer sees success message
+- And customer receives confirmation email
+- And booking is saved with "pending" status
+- And admin receives notification
 
 ---
 
@@ -474,20 +474,20 @@ When a customer needs spare parts, they should:
 
 ### Acceptance Criteria
 
-Given customer navigates to Spare Parts page
-When the page loads
-Then customer sees inquiry form with all necessary fields
-And customer can select car make from dropdown and car model from dropdown (filtered by make)
-And customer can enter vehicle year
-And customer can enter part name/description in text field and provide additional details in text area
-And character count is displayed
-And customer can upload up to 3 images (JPG, PNG, WebP, max 5MB per image)
-And image preview is displayed after upload
-And customer provides name, email, phone number with proper validation
-And when customer clicks submit, inquiry is saved to database
-And customer sees success message
-And customer receives confirmation email
-And admin receives inquiry notification
+- Given customer navigates to Spare Parts page
+- When the page loads
+- Then customer sees inquiry form with all necessary fields
+- And customer can select car make from dropdown and car model from dropdown (filtered by make)
+- And customer can enter vehicle year
+- And customer can enter part name/description in text field and provide additional details in text area
+- And character count is displayed
+- And customer can upload up to 3 images (JPG, PNG, WebP, max 5MB per image)
+- And image preview is displayed after upload
+- And customer provides name, email, phone number with proper validation
+- And when customer clicks submit, inquiry is saved to database
+- And customer sees success message
+- And customer receives confirmation email
+- And admin receives inquiry notification
 
 ---
 
@@ -576,16 +576,16 @@ When a user visits the Gallery page, they should:
 
 ### Acceptance Criteria
 
-Given user navigates to Gallery page
-When the page loads
-Then user sees a grid of images in responsive layout (3-4 columns on desktop, 2 on tablet, 1 on mobile)
-And images are optimized for web (WebP format) and maintain aspect ratio
-And lazy loading is implemented for performance
-And when user clicks on an image, image opens in full-screen lightbox/modal
-And user can navigate to next/previous images with arrows
-And user can close lightbox with X button or ESC key
-And user sees image caption/description and service type tag (if available)
-And user sees loading skeleton/spinner while images load progressively
+- Given user navigates to Gallery page
+- When the page loads
+- Then user sees a grid of images in responsive layout (3-4 columns on desktop, 2 on tablet, 1 on mobile)
+- And images are optimized for web (WebP format) and maintain aspect ratio
+- And lazy loading is implemented for performance
+- And when user clicks on an image, image opens in full-screen lightbox/modal
+- And user can navigate to next/previous images with arrows
+- And user can close lightbox with X button or ESC key
+- And user sees image caption/description and service type tag (if available)
+- And user sees loading skeleton/spinner while images load progressively
 
 ---
 
@@ -668,19 +668,19 @@ When a user wants to contact the company, they should:
 
 ### Acceptance Criteria
 
-Given user navigates to Contact page
-When the page loads
-Then user sees contact form with required fields (full name, email, phone, subject, message)
-And user sees company contact information (address, phone, email)
-And all fields have proper labels and placeholders
-And when user submits the form, system validates all required fields are filled
-And email format, phone format, and message length (at least 10 characters) are validated
-And error messages displayed for invalid fields
-And when user submits valid form, message is saved to database
-And user sees success notification
-And user receives confirmation email
-And admin receives notification email with message details
-And form fields are cleared after successful submission
+- Given user navigates to Contact page
+- When the page loads
+- Then user sees contact form with required fields (full name, email, phone, subject, message)
+- And user sees company contact information (address, phone, email)
+- And all fields have proper labels and placeholders
+- And when user submits the form, system validates all required fields are filled
+- And email format, phone format, and message length (at least 10 characters) are validated
+- And error messages displayed for invalid fields
+- And when user submits valid form, message is saved to database
+- And user sees success notification
+- And user receives confirmation email
+- And admin receives notification email with message details
+- And form fields are cleared after successful submission
 
 ---
 
@@ -763,17 +763,17 @@ Users should be able to:
 
 ### Acceptance Criteria
 
-Given user is on any page
-When user views the navigation bar
-Then user sees language options (EST, ENG, РУС) with current language highlighted/active
-And when user clicks on a language option, the entire website content updates to selected language
-And navigation menu, all page content, buttons and labels update
-And all static content and dynamic content (services, bookings, etc.) displays in selected language
-And date/time formats match locale
-And selected language persists across all pages
-And language preference is stored in browser (localStorage or cookie)
-And new users see website defaulting to Estonian (EST)
-And user can change language at any time
+- Given user is on any page
+- When user views the navigation bar
+- Then user sees language options (EST, ENG, РУС) with current language highlighted/active
+- And when user clicks on a language option, the entire website content updates to selected language
+- And navigation menu, all page content, buttons and labels update
+- And all static content and dynamic content (services, bookings, etc.) displays in selected language
+- And date/time formats match locale
+- And selected language persists across all pages
+- And language preference is stored in browser (localStorage or cookie)
+- And new users see website defaulting to Estonian (EST)
+- And user can change language at any time
 
 ---
 
@@ -853,23 +853,23 @@ Admin accesses the admin panel by:
 
 ### Acceptance Criteria
 
-Given admin wants to access admin features
-When admin navigates to /admin URL directly
-Then login form is displayed as modal/overlay with main website navigation visible in background
-And admin sees username field, password field, and "Login" button
-And password field has show/hide toggle icon
-And when admin submits login form, system validates username and password are not empty
-And error messages displayed for empty fields
-And when admin submits valid credentials, JWT token is generated and stored (HTTP-only cookie)
-And admin is redirected to /admin/dashboard
-And admin dashboard UI is displayed with navigation sections (Broneeringud, Varuosapäringud, Sõnumid, Teenused)
-And session persists for 7 days
-And when admin submits invalid credentials, error message "Vale kasutajanimi või parool" is displayed
-And admin remains on login page
-And rate limiting applied (5 attempts per 15 minutes)
-And when admin is already logged in and navigates to /admin URL, admin is redirected to /admin/dashboard automatically
-And when admin clicks on public navigation links (Avaleht, Teenused, Broneerimime, etc.), admin is logged out automatically
-And admin session is cleared and admin is redirected to public page
+- Given admin wants to access admin features
+- When admin navigates to /admin URL directly
+- Then login form is displayed as modal/overlay with main website navigation visible in background
+- And admin sees username field, password field, and "Login" button
+- And password field has show/hide toggle icon
+- And when admin submits login form, system validates username and password are not empty
+- And error messages displayed for empty fields
+- And when admin submits valid credentials, JWT token is generated and stored (HTTP-only cookie)
+- And admin is redirected to /admin/dashboard
+- And admin dashboard UI is displayed with navigation sections (Broneeringud, Varuosapäringud, Sõnumid, Teenused)
+- And session persists for 7 days
+- And when admin submits invalid credentials, error message "Vale kasutajanimi või parool" is displayed
+- And admin remains on login page
+- And rate limiting applied (5 attempts per 15 minutes)
+- And when admin is already logged in and navigates to /admin URL, admin is redirected to /admin/dashboard automatically
+- And when admin clicks on public navigation links (Avaleht, Teenused, Broneerimime, etc.), admin is logged out automatically
+- And admin session is cleared and admin is redirected to public page
 
 ---
 
@@ -969,20 +969,20 @@ When admin successfully logs in, they see:
 
 ### Acceptance Criteria
 
-Given admin has successfully logged in
-When authentication completes
-Then admin is redirected to /admin/dashboard
-And dashboard page loads with admin UI
-And admin sees 4 statistics cards ("Broneeringud (Täna)", "Uued päringud", "Ootel broneeringud", "Sõnumid")
-And each card displays current count with large number and distinct colors (blue, light blue, orange, etc.)
-And admin sees horizontal tabs (Broneeringud, Varuosapäringud, Sõnumid, Teenused) with counts
-And active tab is highlighted with blue underline
-And clicking each tab navigates to respective section
-And when admin clicks "Logi välja" (Logout) button in top right, admin session is cleared
-And admin is redirected to homepage
-And main website navigation is visible at top (Avaleht, Teenused, Broneerimime, Galerii, etc.)
-And language switcher (EST, ENG, РУС) and BMA logo are visible
-And when unauthenticated user tries to access /admin/dashboard, user is redirected to /admin login page
+- Given admin has successfully logged in
+- When authentication completes
+- Then admin is redirected to /admin/dashboard
+- And dashboard page loads with admin UI
+- And admin sees 4 statistics cards ("Broneeringud (Täna)", "Uued päringud", "Ootel broneeringud", "Sõnumid")
+- And each card displays current count with large number and distinct colors (blue, light blue, orange, etc.)
+- And admin sees horizontal tabs (Broneeringud, Varuosapäringud, Sõnumid, Teenused) with counts
+- And active tab is highlighted with blue underline
+- And clicking each tab navigates to respective section
+- And when admin clicks "Logi välja" (Logout) button in top right, admin session is cleared
+- And admin is redirected to homepage
+- And main website navigation is visible at top (Avaleht, Teenused, Broneerimime, Galerii, etc.)
+- And language switcher (EST, ENG, РУС) and BMA logo are visible
+- And when unauthenticated user tries to access /admin/dashboard, user is redirected to /admin login page
 
 ---
 
@@ -1075,20 +1075,20 @@ When admin clicks "Broneeringud" tab in dashboard, they see:
 
 ### Acceptance Criteria
 
-Given admin is on admin dashboard
-When admin clicks "Broneeringud" tab
-Then bookings table is displayed with columns (ID, Klient, Kontakt, Kuupäev, Aeg, Auto, Staatus, Toimingud)
-And tab shows count in parentheses (e.g., "Broneeringud (3)")
-And all bookings are displayed with ID, client name, contact info, date, time, car model, status dropdown, and delete button
-And when admin clicks blue "Uuenda" (Add new) button, booking creation form/modal opens
-And admin can fill in booking details manually
-And when admin clicks on a booking row, modal/detail panel opens displaying all booking information
-And when admin clicks status dropdown (yellow "Ootel" tag), dropdown shows status options (Ootel, Kinnitatud, Lõpetatud, Tühistatud)
-And admin selects new status, booking status updates in database
-And status tag color changes and customer receives status update email (optional)
-And when admin clicks red "Kustuta" (Delete) button, confirmation dialog appears
-And if admin confirms, booking is deleted from database
-And booking disappears from table with success notification displayed
+- Given admin is on admin dashboard
+- When admin clicks "Broneeringud" tab
+- Then bookings table is displayed with columns (ID, Klient, Kontakt, Kuupäev, Aeg, Auto, Staatus, Toimingud)
+- And tab shows count in parentheses (e.g., "Broneeringud (3)")
+- And all bookings are displayed with ID, client name, contact info, date, time, car model, status dropdown, and delete button
+- And when admin clicks blue "Uuenda" (Add new) button, booking creation form/modal opens
+- And admin can fill in booking details manually
+- And when admin clicks on a booking row, modal/detail panel opens displaying all booking information
+- And when admin clicks status dropdown (yellow "Ootel" tag), dropdown shows status options (Ootel, Kinnitatud, Lõpetatud, Tühistatud)
+- And admin selects new status, booking status updates in database
+- And status tag color changes and customer receives status update email (optional)
+- And when admin clicks red "Kustuta" (Delete) button, confirmation dialog appears
+- And if admin confirms, booking is deleted from database
+- And booking disappears from table with success notification displayed
 
 ---
 
@@ -1181,19 +1181,19 @@ When admin clicks "Varuosapäringud" tab, they see:
 
 ### Acceptance Criteria
 
-Given admin is on admin dashboard
-When admin clicks "Varuosapäringud" tab
-Then inquiries table is displayed with tab showing count (e.g., "Varuosapäringud (4)")
-And table shows ID, Customer Name, Car Model, Part Description, Status, Date, Actions
-And all inquiries are displayed with ID number, customer name, contact info, car make and model, part description, status (Uus, Vastatud, Suletud), submission date, and View/Respond button
-And when admin clicks "Vaata" (View) button or inquiry row, modal/detail panel opens displaying complete information
-And when inquiry has uploaded images, admin sees image thumbnails
-And clicking thumbnail opens full-size image in lightbox and admin can navigate between multiple images
-And when admin clicks "Vasta" (Respond) button, response form appears with fields (Hind, Saadavus dropdown, Tarneaeg, Lisainfo)
-And admin fills form and clicks "Saada vastus" (Send response)
-And response data is saved to database and email is sent to customer with price quote, availability status, delivery time, additional information, and contact details
-And inquiry status automatically updated to "Vastatud" (Responded) with success notification "Vastus saadetud" displayed
-And when admin changes status dropdown manually, status updates in database immediately and status badge color changes
+- Given admin is on admin dashboard
+- When admin clicks "Varuosapäringud" tab
+- Then inquiries table is displayed with tab showing count (e.g., "Varuosapäringud (4)")
+- And table shows ID, Customer Name, Car Model, Part Description, Status, Date, Actions
+- And all inquiries are displayed with ID number, customer name, contact info, car make and model, part description, status (Uus, Vastatud, Suletud), submission date, and View/Respond button
+- And when admin clicks "Vaata" (View) button or inquiry row, modal/detail panel opens displaying complete information
+- And when inquiry has uploaded images, admin sees image thumbnails
+- And clicking thumbnail opens full-size image in lightbox and admin can navigate between multiple images
+- And when admin clicks "Vasta" (Respond) button, response form appears with fields (Hind, Saadavus dropdown, Tarneaeg, Lisainfo)
+- And admin fills form and clicks "Saada vastus" (Send response)
+- And response data is saved to database and email is sent to customer with price quote, availability status, delivery time, additional information, and contact details
+- And inquiry status automatically updated to "Vastatud" (Responded) with success notification "Vastus saadetud" displayed
+- And when admin changes status dropdown manually, status updates in database immediately and status badge color changes
 
 ---
 
@@ -1285,20 +1285,20 @@ When admin clicks "Sõnumid" tab, they see:
 
 ### Acceptance Criteria
 
-Given admin is on admin dashboard
-When admin clicks "Sõnumid" tab
-Then messages table is displayed with tab showing count (e.g., "Sõnumid (1)")
-And table shows ID, Nimi (Name), E-post (Email), Teema (Subject), Kuupäev (Date), Staatus (Status), Toimingud (Actions)
-And all contact messages are displayed with message ID, customer name, email, subject line, submission date, status badge (Lugemata/Loetud/Vastatud), and actions (View, Reply, Delete)
-And unread messages are visually highlighted (bold or colored badge)
-And when admin clicks "Vaata" (View) button or message row, modal/detail panel opens displaying full message details
-And message is automatically marked as "Loetud" (Read)
-And unread count in "Sõnumid" tab decreases by 1 and status badge changes from "Lugemata" to "Loetud"
-And when admin clicks "Vasta" (Reply) button in message details, email compose form/modal appears with pre-filled customer email and subject
-And admin writes response and clicks "Saada" (Send)
-And email is sent to customer and message marked as "Vastatud" (Replied) with success notification "E-kiri saadetud" displayed
-And when admin clicks "Kustuta" (Delete) button, confirmation dialog appears
-And if admin confirms, message is deleted from database and removed from table with success notification displayed
+- Given admin is on admin dashboard
+- When admin clicks "Sõnumid" tab
+- Then messages table is displayed with tab showing count (e.g., "Sõnumid (1)")
+- And table shows ID, Nimi (Name), E-post (Email), Teema (Subject), Kuupäev (Date), Staatus (Status), Toimingud (Actions)
+- And all contact messages are displayed with message ID, customer name, email, subject line, submission date, status badge (Lugemata/Loetud/Vastatud), and actions (View, Reply, Delete)
+- And unread messages are visually highlighted (bold or colored badge)
+- And when admin clicks "Vaata" (View) button or message row, modal/detail panel opens displaying full message details
+- And message is automatically marked as "Loetud" (Read)
+- And unread count in "Sõnumid" tab decreases by 1 and status badge changes from "Lugemata" to "Loetud"
+- And when admin clicks "Vasta" (Reply) button in message details, email compose form/modal appears with pre-filled customer email and subject
+- And admin writes response and clicks "Saada" (Send)
+- And email is sent to customer and message marked as "Vastatud" (Replied) with success notification "E-kiri saadetud" displayed
+- And when admin clicks "Kustuta" (Delete) button, confirmation dialog appears
+- And if admin confirms, message is deleted from database and removed from table with success notification displayed
 
 ---
 
@@ -1391,25 +1391,25 @@ When admin clicks "Teenused" tab, they see:
 
 ### Acceptance Criteria
 
-Given admin is on admin dashboard
-When admin clicks "Teenused" tab
-Then services table is displayed with tab showing total count (e.g., "Teenused (21)")
-And table shows ID, Nimi (Name EST), Kategooria (Category), Hind (Price), Kestus (Duration), Staatus (Status), Toimingud (Actions)
-And all services are displayed with service ID, service name in Estonian, category, price in EUR, duration in minutes, status (Aktiivne/Mitteaktiivne), and actions (Edit, Delete)
-And services can be filtered by category
-And when admin clicks "Lisa teenus" (Add service) button, service creation modal opens with tabs for 3 languages
-And form contains fields for Estonian (Nimi, Kirjeldus), English (Name, Description), Russian (Название, Описание), and common fields (Kategooria dropdown, Hind, Kestus, Aktiivne checkbox)
-And admin fills all required fields and clicks "Salvesta" (Save)
-And system validates all 3 language name and description fields are filled, price is positive number, duration is positive integer, and category is selected
-And error messages displayed for invalid/empty fields
-And service is created in database and new service appears in table
-And when admin clicks "Muuda" (Edit) button on service row, edit modal opens with pre-filled data
-And all fields can be modified and admin clicks "Uuenda" (Update)
-And service is updated in database and changes reflect in table immediately
-And when admin toggles "Aktiivne" (Active) checkbox and saves changes, service active status updates in database
-And inactive services hidden from public Services page and active services visible on public Services page
-And when admin clicks "Kustuta" (Delete) button, confirmation dialog appears "Kas oled kindel? See kustutab teenuse jäädavalt."
-And if admin confirms, service is deleted from database with warning shown if service has existing bookings and success notification displayed
+- Given admin is on admin dashboard
+- When admin clicks "Teenused" tab
+- Then services table is displayed with tab showing total count (e.g., "Teenused (21)")
+- And table shows ID, Nimi (Name EST), Kategooria (Category), Hind (Price), Kestus (Duration), Staatus (Status), Toimingud (Actions)
+- And all services are displayed with service ID, service name in Estonian, category, price in EUR, duration in minutes, status (Aktiivne/Mitteaktiivne), and actions (Edit, Delete)
+- And services can be filtered by category
+- And when admin clicks "Lisa teenus" (Add service) button, service creation modal opens with tabs for 3 languages
+- And form contains fields for Estonian (Nimi, Kirjeldus), English (Name, Description), Russian (Название, Описание), and common fields (Kategooria dropdown, Hind, Kestus, Aktiivne checkbox)
+- And admin fills all required fields and clicks "Salvesta" (Save)
+- And system validates all 3 language name and description fields are filled, price is positive number, duration is positive integer, and category is selected
+- And error messages displayed for invalid/empty fields
+- And service is created in database and new service appears in table
+- And when admin clicks "Muuda" (Edit) button on service row, edit modal opens with pre-filled data
+- And all fields can be modified and admin clicks "Uuenda" (Update)
+- And service is updated in database and changes reflect in table immediately
+- And when admin toggles "Aktiivne" (Active) checkbox and saves changes, service active status updates in database
+- And inactive services hidden from public Services page and active services visible on public Services page
+- And when admin clicks "Kustuta" (Delete) button, confirmation dialog appears "Kas oled kindel? See kustutab teenuse jäädavalt."
+- And if admin confirms, service is deleted from database with warning shown if service has existing bookings and success notification displayed
 
 ---
 
