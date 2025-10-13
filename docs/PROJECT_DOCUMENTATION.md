@@ -191,47 +191,14 @@ When a user visits the car repair company website for the first time, they shoul
 
 ### Acceptance Criteria
 
-#### AC1: Company Identity Display
-- Given user visits the car repair company homepage
-- When the page loads
-- Then user sees the company logo at the top
-- And user sees the main headline "Professionaalne autoremondi töökoda" (Professional car repair workshop)
-- And user understands this is a car repair service
-
-#### AC2: Company Statistics Display
-- Given user is on the homepage
-- When user views the page
-- Then user sees company credibility statistics displayed clearly
-
-#### AC3: Service Overview Access
-- Given user wants to learn about services
-- When user views the homepage
-- Then user sees a "Vaata teenuseid" (View services) button
-- And navigation menu contains "Teenused" (Services) link
-- And user can access service information easily
-
-#### AC4: Call-to-Action Visibility
-- Given user wants to take action
-- When user views the homepage
-- Then user sees "Broneeri aeg" (Book appointment) button prominently displayed
-- And "Kontakt" (Contact) link is available in navigation
-
-#### AC5: Multi-language Support
-- Given user may speak different languages
-- When user views the homepage
-- Then language options (EST, ENG, РУС) are visible
-- And user can switch between languages
-
-#### AC6: Complete Navigation
-- Given user wants to explore the website
-- When user views the homepage
-- Then navigation menu shows all main sections:
-  - Avaleht (Home)
-  - Teenused (Services)
-  - Broneerimime (Booking)
-  - Galerii (Gallery)
-  - Värvisotsraring (Color matching)
-  - Kontakt (Contact)
+Given user visits the car repair company homepage
+When the page loads
+Then user sees the company logo and main headline "Professionaalne autoremondi töökoda"
+And user sees company credibility statistics
+And user sees "Vaata teenuseid" and "Broneeri aeg" buttons prominently
+And navigation menu contains all main sections (Avaleht, Teenused, Broneerimime, Galerii, Värvisotsraring, Kontakt)
+And language options (EST, ENG, РУС) are visible and functional
+And user can easily access service information and contact details
 
 ---
 
@@ -314,38 +281,16 @@ When a user navigates to the Services page, they should see:
 
 ### Acceptance Criteria
 
-#### AC1: Services List Display
-- Given user navigates to the Services page
-- When the page loads
-- Then user sees all active services displayed
-- And services are organized by categories (Engine Repair, Diagnostics, Electrical Work, Brake System, etc.)
-
-#### AC2: Service Details
-- Given user is viewing the services list
-- When user views a service
-- Then user sees service name in selected language
-- And user sees detailed description
-- And user sees price in EUR
-- And user sees estimated duration
-
-#### AC3: Service Categories
-- Given user wants to browse specific service types
-- When user views the page
-- Then services are grouped by categories
-- And each category is clearly labeled
-- And categories are visually separated
-
-#### AC4: Multilingual Content
-- Given user has selected a language (EST/ENG/РУС)
-- When user views the Services page
-- Then all service names and descriptions are displayed in selected language
-- And pricing currency format matches locale
-
-#### AC5: Booking Integration
-- Given user wants to book a service
-- When user views a service
-- Then user sees "Broneeri" (Book) button for each service
-- And clicking the button redirects to booking page with service pre-selected
+Given user navigates to the Services page
+When the page loads
+Then user sees all active services displayed
+And services are organized by categories (Engine Repair, Diagnostics, Electrical Work, Brake System, etc.)
+And each service shows name in selected language, detailed description, price in EUR, and estimated duration
+And services are grouped by categories with clear labels and visual separation
+And all service names and descriptions are displayed in selected language (EST/ENG/РУС)
+And pricing currency format matches locale
+And user sees "Broneeri" (Book) button for each service
+And clicking the button redirects to booking page with service pre-selected
 
 ---
 
@@ -429,54 +374,19 @@ When a customer wants to book a service, they should:
 
 ### Acceptance Criteria
 
-#### AC1: Calendar Display
-- Given customer is on the booking page
-- When the page loads
-- Then customer sees a calendar with current month
-- And dates are color-coded (green=available, yellow=partially booked, red=fully booked)
-- And customer can navigate between months
-
-#### AC2: Date Selection
-- Given customer views the calendar
-- When customer clicks on an available date
-- Then the date is selected and highlighted
-- And available time slots for that date are displayed below
-- And fully booked dates are not clickable
-
-#### AC3: Time Slot Selection
-- Given customer has selected a date
-- When available time slots are displayed
-- Then customer sees time slots in 30-minute intervals (e.g., 09:00, 09:30, 10:00)
-- And customer can select one time slot
-- And already booked slots are disabled
-
-#### AC4: Booking Form Completion
-- Given customer has selected date and time
-- When customer scrolls to booking form
-- Then customer fills in required fields:
-  - Full name
-  - Email address
-  - Phone number
-  - Car make and model
-  - Service type (dropdown)
-  - Additional description (optional)
-- And all fields have validation
-
-#### AC5: Form Validation
-- Given customer submits the booking form
-- When form is submitted
-- Then system validates all required fields are filled
-- And email format is correct
-- And phone number format is correct
-- And error messages are displayed for invalid fields
-
-#### AC6: Booking Confirmation
-- Given customer submits valid booking form
-- When booking is successfully created
-- Then customer sees success message
-- And customer receives confirmation email
-- And booking is saved with "pending" status
-- And admin receives notification
+Given customer is on the booking page
+When the page loads
+Then customer sees a calendar with current month and dates are color-coded (green=available, yellow=partially booked, red=fully booked)
+And customer can navigate between months
+And when customer clicks on an available date, the date is selected and highlighted
+And available time slots for that date are displayed below in 30-minute intervals (e.g., 09:00, 09:30, 10:00)
+And fully booked dates and already booked time slots are not clickable/disabled
+And customer fills in required fields (full name, email, phone, car make and model, service type, additional description optional)
+And all fields have validation with proper error messages for invalid fields
+And when customer submits valid booking form, customer sees success message
+And customer receives confirmation email
+And booking is saved with "pending" status
+And admin receives notification
 
 ---
 
@@ -564,48 +474,20 @@ When a customer needs spare parts, they should:
 
 ### Acceptance Criteria
 
-#### AC1: Inquiry Form Display
-- Given customer navigates to Spare Parts page
-- When the page loads
-- Then customer sees inquiry form
-- And form contains all necessary fields
-
-#### AC2: Vehicle Information Input
-- Given customer is filling the form
-- When customer enters vehicle information
-- Then customer can select car make from dropdown
-- And customer can select car model from dropdown (filtered by make)
-- And customer can enter vehicle year
-
-#### AC3: Parts Description
-- Given customer needs to describe parts
-- When customer fills the form
-- Then customer can enter part name/description in text field
-- And customer can provide additional details in text area
-- And character count is displayed
-
-#### AC4: Image Upload
-- Given customer wants to show the part visually
-- When customer clicks upload button
-- Then customer can upload up to 3 images
-- And supported formats are JPG, PNG, WebP
-- And maximum file size is 5MB per image
-- And image preview is displayed after upload
-
-#### AC5: Contact Information
-- Given customer needs to be contacted
-- When customer fills the form
-- Then customer provides name, email, phone number
-- And all fields are validated
-- And email format is validated
-
-#### AC6: Inquiry Submission
-- Given customer completes the form
-- When customer clicks submit
-- Then inquiry is saved to database
-- And customer sees success message
-- And customer receives confirmation email
-- And admin receives inquiry notification
+Given customer navigates to Spare Parts page
+When the page loads
+Then customer sees inquiry form with all necessary fields
+And customer can select car make from dropdown and car model from dropdown (filtered by make)
+And customer can enter vehicle year
+And customer can enter part name/description in text field and provide additional details in text area
+And character count is displayed
+And customer can upload up to 3 images (JPG, PNG, WebP, max 5MB per image)
+And image preview is displayed after upload
+And customer provides name, email, phone number with proper validation
+And when customer clicks submit, inquiry is saved to database
+And customer sees success message
+And customer receives confirmation email
+And admin receives inquiry notification
 
 ---
 
@@ -694,37 +576,16 @@ When a user visits the Gallery page, they should:
 
 ### Acceptance Criteria
 
-#### AC1: Gallery Page Display
-- Given user navigates to Gallery page
-- When the page loads
-- Then user sees a grid of images
-- And images are displayed in responsive grid layout (3-4 columns on desktop, 2 on tablet, 1 on mobile)
-
-#### AC2: Image Quality
-- Given user views gallery images
-- When images load
-- Then images are optimized for web (WebP format)
-- And images maintain aspect ratio
-- And lazy loading is implemented for performance
-
-#### AC3: Image Lightbox
-- Given user wants to view image in detail
-- When user clicks on an image
-- Then image opens in full-screen lightbox/modal
-- And user can navigate to next/previous images with arrows
-- And user can close lightbox with X button or ESC key
-
-#### AC4: Image Information
-- Given user views an image in lightbox
-- When lightbox is open
-- Then user sees image caption/description (if available)
-- And user sees service type tag (if available)
-
-#### AC5: Loading State
-- Given gallery is loading images
-- When page is loading
-- Then user sees loading skeleton/spinner
-- And images load progressively
+Given user navigates to Gallery page
+When the page loads
+Then user sees a grid of images in responsive layout (3-4 columns on desktop, 2 on tablet, 1 on mobile)
+And images are optimized for web (WebP format) and maintain aspect ratio
+And lazy loading is implemented for performance
+And when user clicks on an image, image opens in full-screen lightbox/modal
+And user can navigate to next/previous images with arrows
+And user can close lightbox with X button or ESC key
+And user sees image caption/description and service type tag (if available)
+And user sees loading skeleton/spinner while images load progressively
 
 ---
 
@@ -807,45 +668,19 @@ When a user wants to contact the company, they should:
 
 ### Acceptance Criteria
 
-#### AC1: Contact Form Display
-- Given user navigates to Contact page
-- When the page loads
-- Then user sees contact form with required fields
-- And user sees company contact information (address, phone, email)
-
-#### AC2: Form Fields
-- Given user is filling contact form
-- When user enters information
-- Then user fills in required fields:
-  - Full name
-  - Email address
-  - Phone number
-  - Subject
-  - Message (text area)
-- And all fields have proper labels and placeholders
-
-#### AC3: Form Validation
-- Given user submits the contact form
-- When form is submitted
-- Then system validates all required fields are filled
-- And email format is validated
-- And phone format is validated
-- And message length is at least 10 characters
-- And error messages displayed for invalid fields
-
-#### AC4: Message Submission
-- Given user submits valid form
-- When form is successfully submitted
-- Then message is saved to database
-- And user sees success notification
-- And user receives confirmation email
-- And admin receives notification email with message details
-
-#### AC5: Form Reset
-- Given user successfully submitted message
-- When success notification is displayed
-- Then form fields are cleared
-- And user can submit another message if needed
+Given user navigates to Contact page
+When the page loads
+Then user sees contact form with required fields (full name, email, phone, subject, message)
+And user sees company contact information (address, phone, email)
+And all fields have proper labels and placeholders
+And when user submits the form, system validates all required fields are filled
+And email format, phone format, and message length (at least 10 characters) are validated
+And error messages displayed for invalid fields
+And when user submits valid form, message is saved to database
+And user sees success notification
+And user receives confirmation email
+And admin receives notification email with message details
+And form fields are cleared after successful submission
 
 ---
 
@@ -928,38 +763,17 @@ Users should be able to:
 
 ### Acceptance Criteria
 
-#### AC1: Language Switcher Display
-- Given user is on any page
-- When user views the navigation bar
-- Then user sees language options (EST, ENG, РУС)
-- And current language is highlighted/active
-
-#### AC2: Language Selection
-- Given user wants to change language
-- When user clicks on a language option
-- Then the entire website content updates to selected language
-- And navigation menu updates
-- And all page content updates
-- And buttons and labels update
-
-#### AC3: Content Translation
-- Given user has selected a language
-- When viewing any page
-- Then all static content displays in selected language
-- And all dynamic content (services, bookings, etc.) displays in selected language
-- And date/time formats match locale
-
-#### AC4: Language Persistence
-- Given user has selected a language
-- When user navigates to different pages
-- Then selected language persists across all pages
-- And language preference is stored in browser (localStorage or cookie)
-
-#### AC5: Default Language
-- Given new user visits website
-- When user has not selected a language
-- Then website defaults to Estonian (EST)
-- And user can change language at any time
+Given user is on any page
+When user views the navigation bar
+Then user sees language options (EST, ENG, РУС) with current language highlighted/active
+And when user clicks on a language option, the entire website content updates to selected language
+And navigation menu, all page content, buttons and labels update
+And all static content and dynamic content (services, bookings, etc.) displays in selected language
+And date/time formats match locale
+And selected language persists across all pages
+And language preference is stored in browser (localStorage or cookie)
+And new users see website defaulting to Estonian (EST)
+And user can change language at any time
 
 ---
 
@@ -1039,55 +853,23 @@ Admin accesses the admin panel by:
 
 ### Acceptance Criteria
 
-#### AC1: Admin Panel Access via URL
-- Given admin wants to access admin features
-- When admin navigates to /admin URL directly
-- Then login form is displayed as modal/overlay
-- And main website navigation is visible in background
-
-#### AC2: Login Form Display
-- Given admin is on /admin URL
-- When login modal appears
-- Then admin sees username field
-- And admin sees password field
-- And admin sees "Login" button
-- And password field has show/hide toggle icon
-
-#### AC3: Credential Validation
-- Given admin enters credentials
-- When admin submits login form
-- Then system validates username is not empty
-- And system validates password is not empty
-- And error messages displayed for empty fields
-
-#### AC4: Successful Authentication
-- Given admin submits valid credentials
-- When credentials are correct
-- Then JWT token is generated and stored (HTTP-only cookie)
-- And admin is redirected to /admin/dashboard
-- And admin dashboard UI is displayed
-- And navigation shows admin sections (Broneeringud, Varuosapäringud, Sõnumid, Teenused)
-- And session persists for 7 days
-
-#### AC5: Failed Login
-- Given admin submits invalid credentials
-- When credentials are incorrect
-- Then error message "Vale kasutajanimi või parool" (Invalid username or password) is displayed
-- And admin remains on login page
-- And rate limiting applied (5 attempts per 15 minutes)
-
-#### AC6: Already Authenticated
-- Given admin is already logged in
-- When admin navigates to /admin URL
-- Then admin is redirected to /admin/dashboard automatically
-
-#### AC7: Public Navigation Logout
-- Given admin is logged in and on admin dashboard
-- When admin clicks on public navigation links (Avaleht, Teenused, Broneerimime, etc.)
-- Then admin is logged out automatically
-- And admin session is cleared
-- And admin is redirected to public page
-- And admin cannot access admin features anymore
+Given admin wants to access admin features
+When admin navigates to /admin URL directly
+Then login form is displayed as modal/overlay with main website navigation visible in background
+And admin sees username field, password field, and "Login" button
+And password field has show/hide toggle icon
+And when admin submits login form, system validates username and password are not empty
+And error messages displayed for empty fields
+And when admin submits valid credentials, JWT token is generated and stored (HTTP-only cookie)
+And admin is redirected to /admin/dashboard
+And admin dashboard UI is displayed with navigation sections (Broneeringud, Varuosapäringud, Sõnumid, Teenused)
+And session persists for 7 days
+And when admin submits invalid credentials, error message "Vale kasutajanimi või parool" is displayed
+And admin remains on login page
+And rate limiting applied (5 attempts per 15 minutes)
+And when admin is already logged in and navigates to /admin URL, admin is redirected to /admin/dashboard automatically
+And when admin clicks on public navigation links (Avaleht, Teenused, Broneerimime, etc.), admin is logged out automatically
+And admin session is cleared and admin is redirected to public page
 
 ---
 
@@ -1187,52 +969,20 @@ When admin successfully logs in, they see:
 
 ### Acceptance Criteria
 
-#### AC1: Dashboard Access After Login
-- Given admin has successfully logged in
-- When authentication completes
-- Then admin is redirected to /admin/dashboard
-- And dashboard page loads with admin UI
-
-#### AC2: Statistics Cards Display
-- Given admin is on dashboard
-- When page loads
-- Then admin sees 4 statistics cards:
-  - "Broneeringud (Täna)" - Today's Bookings count
-  - "Uued päringud" - New spare parts inquiries count
-  - "Ootel broneeringud" - Pending bookings count
-  - "Sõnumid" - Unread messages count
-- And each card displays current count with large number
-- And cards use distinct colors (blue, light blue, orange, etc.)
-
-#### AC3: Navigation Tabs Display
-- Given admin wants to navigate to specific section
-- When admin views dashboard
-- Then admin sees horizontal tabs:
-  - Broneeringud (3) - with count
-  - Varuosapäringud (4) - with count
-  - Sõnumid (1) - with count
-  - Teenused (21) - with count
-- And active tab is highlighted with blue underline
-- And clicking each tab navigates to respective section
-
-#### AC4: Logout Button
-- Given admin wants to log out
-- When admin clicks "Logi välja" (Logout) button in top right
-- Then admin session is cleared
-- And admin is redirected to homepage
-- And admin cannot access admin features anymore
-
-#### AC5: Main Navigation Visibility
-- Given admin is on dashboard
-- When dashboard loads
-- Then main website navigation is visible at top (Avaleht, Teenused, Broneerimime, Galerii, etc.)
-- And language switcher (EST, ENG, РУС) is visible
-- And BMA logo is visible
-
-#### AC6: Protected Access
-- Given user is not authenticated
-- When user tries to access /admin/dashboard
-- Then user is redirected to /admin login page
+Given admin has successfully logged in
+When authentication completes
+Then admin is redirected to /admin/dashboard
+And dashboard page loads with admin UI
+And admin sees 4 statistics cards ("Broneeringud (Täna)", "Uued päringud", "Ootel broneeringud", "Sõnumid")
+And each card displays current count with large number and distinct colors (blue, light blue, orange, etc.)
+And admin sees horizontal tabs (Broneeringud, Varuosapäringud, Sõnumid, Teenused) with counts
+And active tab is highlighted with blue underline
+And clicking each tab navigates to respective section
+And when admin clicks "Logi välja" (Logout) button in top right, admin session is cleared
+And admin is redirected to homepage
+And main website navigation is visible at top (Avaleht, Teenused, Broneerimime, Galerii, etc.)
+And language switcher (EST, ENG, РУС) and BMA logo are visible
+And when unauthenticated user tries to access /admin/dashboard, user is redirected to /admin login page
 
 ---
 
@@ -1325,61 +1075,20 @@ When admin clicks "Broneeringud" tab in dashboard, they see:
 
 ### Acceptance Criteria
 
-#### AC1: Bookings Tab Navigation
-- Given admin is on admin dashboard
-- When admin clicks "Broneeringud" tab
-- Then bookings table is displayed
-- And tab shows count in parentheses (e.g., "Broneeringud (3)")
-- And table shows columns: ID, Klient (Client), Kontakt (Contact), Kuupäev (Date), Aeg (Time), Auto (Car), Staatus (Status), Toimingud (Actions)
-
-#### AC2: Bookings Table Display
-- Given admin is viewing bookings table
-- When table loads
-- Then all bookings are displayed with:
-  - ID (e.g., #2, #1, #3)
-  - Client name (e.g., "sanja")
-  - Contact (email: SANJA@gmail.com, phone: 55666310)
-  - Date (e.g., 2025-10-05T21:00:00.000Z)
-  - Time (e.g., 09:00:00, 17:00:00)
-  - Car model (e.g., "bmw x5")
-  - Status dropdown (yellow "Ootel" tag)
-  - Red "Kustuta" (Delete) button
-
-#### AC3: Add New Booking Button
-- Given admin wants to manually add booking
-- When admin clicks blue "Uuenda" (Add new) button
-- Then booking creation form/modal opens
-- And admin can fill in booking details manually
-
-#### AC4: View Booking Details
-- Given admin wants to see full booking information
-- When admin clicks on a booking row
-- Then modal/detail panel opens
-- And displays all booking information:
-  - Customer name, email, phone
-  - Car make and model
-  - Service type
-  - Date and time
-  - Description
-  - Status
-  - Created at timestamp
-
-#### AC5: Update Booking Status
-- Given admin wants to change booking status
-- When admin clicks status dropdown (yellow "Ootel" tag)
-- Then dropdown shows status options (Ootel, Kinnitatud, Lõpetatud, Tühistatud)
-- And admin selects new status
-- Then booking status updates in database
-- And status tag color changes
-- And customer receives status update email (optional)
-
-#### AC6: Delete Booking
-- Given admin wants to remove a booking
-- When admin clicks red "Kustuta" (Delete) button
-- Then confirmation dialog appears "Kas oled kindel, et soovid broneeringu kustutada?" (Are you sure you want to delete this booking?)
-- And if admin confirms, booking is deleted from database
-- And booking disappears from table
-- And success notification displayed
+Given admin is on admin dashboard
+When admin clicks "Broneeringud" tab
+Then bookings table is displayed with columns (ID, Klient, Kontakt, Kuupäev, Aeg, Auto, Staatus, Toimingud)
+And tab shows count in parentheses (e.g., "Broneeringud (3)")
+And all bookings are displayed with ID, client name, contact info, date, time, car model, status dropdown, and delete button
+And when admin clicks blue "Uuenda" (Add new) button, booking creation form/modal opens
+And admin can fill in booking details manually
+And when admin clicks on a booking row, modal/detail panel opens displaying all booking information
+And when admin clicks status dropdown (yellow "Ootel" tag), dropdown shows status options (Ootel, Kinnitatud, Lõpetatud, Tühistatud)
+And admin selects new status, booking status updates in database
+And status tag color changes and customer receives status update email (optional)
+And when admin clicks red "Kustuta" (Delete) button, confirmation dialog appears
+And if admin confirms, booking is deleted from database
+And booking disappears from table with success notification displayed
 
 ---
 
@@ -1472,73 +1181,19 @@ When admin clicks "Varuosapäringud" tab, they see:
 
 ### Acceptance Criteria
 
-#### AC1: Inquiries Tab Navigation
-- Given admin is on admin dashboard
-- When admin clicks "Varuosapäringud" tab
-- Then inquiries table is displayed
-- And tab shows count (e.g., "Varuosapäringud (4)")
-- And table shows: ID, Customer Name, Car Model, Part Description, Status, Date, Actions
-
-#### AC2: Inquiries Table Display
-- Given admin is viewing inquiries table
-- When table loads
-- Then all inquiries are displayed with:
-  - ID number
-  - Customer name
-  - Contact info (email, phone)
-  - Car make and model
-  - Part description
-  - Status (Uus, Vastatud, Suletud)
-  - Submission date
-  - View/Respond button
-
-#### AC3: View Inquiry Details
-- Given admin wants to see full inquiry
-- When admin clicks "Vaata" (View) button or inquiry row
-- Then modal/detail panel opens
-- And displays complete information:
-  - Customer name, email, phone
-  - Car make, model, year
-  - Part description
-  - Uploaded images (if any)
-  - Submission date
-  - Current status
-
-#### AC4: View Uploaded Images
-- Given inquiry has uploaded images
-- When admin views inquiry details
-- Then admin sees image thumbnails
-- And clicking thumbnail opens full-size image in lightbox
-- And admin can navigate between multiple images
-
-#### AC5: Respond to Inquiry
-- Given admin wants to provide price quote
-- When admin clicks "Vasta" (Respond) button
-- Then response form appears with fields:
-  - Hind (Price) in EUR
-  - Saadavus (Availability): dropdown (Laos, Tellida, Ei ole saadaval)
-  - Tarneaeg (Delivery Time): text input (e.g., "2-3 päeva")
-  - Lisainfo (Additional Info): text area
-- And admin fills form and clicks "Saada vastus" (Send response)
-
-#### AC6: Send Response Email
-- Given admin submits response
-- When response form is submitted
-- Then response data is saved to database
-- And email is sent to customer with:
-  - Price quote
-  - Availability status
-  - Delivery time estimate
-  - Additional information
-  - Contact details for follow-up
-- And inquiry status automatically updated to "Vastatud" (Responded)
-- And success notification "Vastus saadetud" displayed
-
-#### AC7: Update Inquiry Status
-- Given admin wants to manually update status
-- When admin changes status dropdown (Uus, Vastatud, Suletud)
-- Then status updates in database immediately
-- And status badge color changes
+Given admin is on admin dashboard
+When admin clicks "Varuosapäringud" tab
+Then inquiries table is displayed with tab showing count (e.g., "Varuosapäringud (4)")
+And table shows ID, Customer Name, Car Model, Part Description, Status, Date, Actions
+And all inquiries are displayed with ID number, customer name, contact info, car make and model, part description, status (Uus, Vastatud, Suletud), submission date, and View/Respond button
+And when admin clicks "Vaata" (View) button or inquiry row, modal/detail panel opens displaying complete information
+And when inquiry has uploaded images, admin sees image thumbnails
+And clicking thumbnail opens full-size image in lightbox and admin can navigate between multiple images
+And when admin clicks "Vasta" (Respond) button, response form appears with fields (Hind, Saadavus dropdown, Tarneaeg, Lisainfo)
+And admin fills form and clicks "Saada vastus" (Send response)
+And response data is saved to database and email is sent to customer with price quote, availability status, delivery time, additional information, and contact details
+And inquiry status automatically updated to "Vastatud" (Responded) with success notification "Vastus saadetud" displayed
+And when admin changes status dropdown manually, status updates in database immediately and status badge color changes
 
 ---
 
@@ -1630,64 +1285,20 @@ When admin clicks "Sõnumid" tab, they see:
 
 ### Acceptance Criteria
 
-#### AC1: Messages Tab Navigation
-- Given admin is on admin dashboard
-- When admin clicks "Sõnumid" tab
-- Then messages table is displayed
-- And tab shows count (e.g., "Sõnumid (1)")
-- And table shows: ID, Nimi (Name), E-post (Email), Teema (Subject), Kuupäev (Date), Staatus (Status), Toimingud (Actions)
-
-#### AC2: Messages Table Display
-- Given admin is viewing messages table
-- When table loads
-- Then all contact messages are displayed with:
-  - Message ID
-  - Customer name
-  - Email address
-  - Subject line
-  - Submission date
-  - Status badge (Lugemata/Loetud - Unread/Read, Vastatud - Replied)
-  - Actions (View, Reply, Delete)
-- And unread messages are visually highlighted (bold or colored badge)
-
-#### AC3: View Message Details
-- Given admin wants to read a message
-- When admin clicks "Vaata" (View) button or message row
-- Then modal/detail panel opens
-- And displays full message:
-  - Customer name, email, phone
-  - Subject
-  - Full message text
-  - Submission date and time
-  - Read status
-  - Reply status
-
-#### AC4: Mark as Read Automatically
-- Given admin opens a message
-- When message detail modal appears
-- Then message is automatically marked as "Loetud" (Read)
-- And unread count in "Sõnumid" tab decreases by 1
-- And status badge changes from "Lugemata" to "Loetud"
-
-#### AC5: Reply to Message
-- Given admin wants to respond to customer
-- When admin clicks "Vasta" (Reply) button in message details
-- Then email compose form/modal appears with:
-  - To: customer email (pre-filled, read-only)
-  - Subject: "Re: [original subject]" (pre-filled)
-  - Message: rich text area for response
-- And admin writes response and clicks "Saada" (Send)
-- Then email is sent to customer
-- And message marked as "Vastatud" (Replied)
-- And success notification "E-kiri saadetud" displayed
-
-#### AC6: Delete Message
-- Given admin wants to remove a message
-- When admin clicks "Kustuta" (Delete) button
-- Then confirmation dialog appears "Kas oled kindel, et soovid sõnumi kustutada?"
-- And if admin confirms, message is deleted from database
-- And message removed from table
-- And success notification displayed
+Given admin is on admin dashboard
+When admin clicks "Sõnumid" tab
+Then messages table is displayed with tab showing count (e.g., "Sõnumid (1)")
+And table shows ID, Nimi (Name), E-post (Email), Teema (Subject), Kuupäev (Date), Staatus (Status), Toimingud (Actions)
+And all contact messages are displayed with message ID, customer name, email, subject line, submission date, status badge (Lugemata/Loetud/Vastatud), and actions (View, Reply, Delete)
+And unread messages are visually highlighted (bold or colored badge)
+And when admin clicks "Vaata" (View) button or message row, modal/detail panel opens displaying full message details
+And message is automatically marked as "Loetud" (Read)
+And unread count in "Sõnumid" tab decreases by 1 and status badge changes from "Lugemata" to "Loetud"
+And when admin clicks "Vasta" (Reply) button in message details, email compose form/modal appears with pre-filled customer email and subject
+And admin writes response and clicks "Saada" (Send)
+And email is sent to customer and message marked as "Vastatud" (Replied) with success notification "E-kiri saadetud" displayed
+And when admin clicks "Kustuta" (Delete) button, confirmation dialog appears
+And if admin confirms, message is deleted from database and removed from table with success notification displayed
 
 ---
 
@@ -1780,85 +1391,25 @@ When admin clicks "Teenused" tab, they see:
 
 ### Acceptance Criteria
 
-#### AC1: Services Tab Navigation
-- Given admin is on admin dashboard
-- When admin clicks "Teenused" tab
-- Then services table is displayed
-- And tab shows total count (e.g., "Teenused (21)")
-- And table shows: ID, Nimi (Name EST), Kategooria (Category), Hind (Price), Kestus (Duration), Staatus (Status), Toimingud (Actions)
-
-#### AC2: Services Table Display
-- Given admin is viewing services table
-- When table loads
-- Then all services are displayed with:
-  - Service ID
-  - Service name in Estonian
-  - Category (Mootorite remont, Diagnostika, etc.)
-  - Price in EUR
-  - Duration in minutes
-  - Status (Aktiivne/Mitteaktiivne - Active/Inactive)
-  - Actions (Edit, Delete buttons)
-- And services can be filtered by category
-
-#### AC3: Add New Service
-- Given admin wants to create new service
-- When admin clicks "Lisa teenus" (Add service) button
-- Then service creation modal opens with tabs for 3 languages
-- And form contains fields:
-  - Tab 1 - EESTI (Estonian):
-    - Nimi (Name)
-    - Kirjeldus (Description)
-  - Tab 2 - INGLISE (English):
-    - Name
-    - Description
-  - Tab 3 - VENE (Russian):
-    - Название (Name)
-    - Описание (Description)
-  - Common fields:
-    - Kategooria (Category) dropdown
-    - Hind (Price) in EUR
-    - Kestus (Duration) in minutes
-    - Aktiivne (Active) checkbox
-- And admin fills all required fields
-- And clicks "Salvesta" (Save)
-- Then service is created in database
-- And new service appears in table
-
-#### AC4: Multilingual Content Validation
-- Given admin is creating/editing service
-- When admin submits form
-- Then system validates:
-  - All 3 language name fields are filled
-  - All 3 language description fields are filled
-  - Price is positive number
-  - Duration is positive integer
-  - Category is selected
-- And error messages displayed for invalid/empty fields
-
-#### AC5: Edit Existing Service
-- Given admin wants to update a service
-- When admin clicks "Muuda" (Edit) button on service row
-- Then edit modal opens with pre-filled data
-- And all fields can be modified
-- And admin clicks "Uuenda" (Update)
-- Then service is updated in database
-- And changes reflect in table immediately
-
-#### AC6: Activate/Deactivate Service
-- Given admin wants to change service availability
-- When admin toggles "Aktiivne" (Active) checkbox in edit form
-- And saves changes
-- Then service active status updates in database
-- And inactive services hidden from public Services page (UC-02)
-- And active services visible on public Services page
-
-#### AC7: Delete Service
-- Given admin wants to remove a service
-- When admin clicks "Kustuta" (Delete) button
-- Then confirmation dialog appears "Kas oled kindel? See kustutab teenuse jäädavalt."
-- And if admin confirms, service is deleted from database
-- And warning shown if service has existing bookings
-- And success notification displayed
+Given admin is on admin dashboard
+When admin clicks "Teenused" tab
+Then services table is displayed with tab showing total count (e.g., "Teenused (21)")
+And table shows ID, Nimi (Name EST), Kategooria (Category), Hind (Price), Kestus (Duration), Staatus (Status), Toimingud (Actions)
+And all services are displayed with service ID, service name in Estonian, category, price in EUR, duration in minutes, status (Aktiivne/Mitteaktiivne), and actions (Edit, Delete)
+And services can be filtered by category
+And when admin clicks "Lisa teenus" (Add service) button, service creation modal opens with tabs for 3 languages
+And form contains fields for Estonian (Nimi, Kirjeldus), English (Name, Description), Russian (Название, Описание), and common fields (Kategooria dropdown, Hind, Kestus, Aktiivne checkbox)
+And admin fills all required fields and clicks "Salvesta" (Save)
+And system validates all 3 language name and description fields are filled, price is positive number, duration is positive integer, and category is selected
+And error messages displayed for invalid/empty fields
+And service is created in database and new service appears in table
+And when admin clicks "Muuda" (Edit) button on service row, edit modal opens with pre-filled data
+And all fields can be modified and admin clicks "Uuenda" (Update)
+And service is updated in database and changes reflect in table immediately
+And when admin toggles "Aktiivne" (Active) checkbox and saves changes, service active status updates in database
+And inactive services hidden from public Services page and active services visible on public Services page
+And when admin clicks "Kustuta" (Delete) button, confirmation dialog appears "Kas oled kindel? See kustutab teenuse jäädavalt."
+And if admin confirms, service is deleted from database with warning shown if service has existing bookings and success notification displayed
 
 ---
 
