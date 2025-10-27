@@ -155,6 +155,20 @@ function AdminDashboard() {
     }
   };
 
+  const deleteInquiry = async (inquiryId) => {
+    if (!confirm('Kas oled kindel, et soovid selle päringu kustutada?')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/admin/paringud/${inquiryId}`);
+      toast.success('Päring kustutatud');
+      fetchDashboardData();
+    } catch (error) {
+      toast.error('Viga päringu kustutamisel');
+    }
+  };
+
   const openResponseModal = (inquiry) => {
     setSelectedInquiry(inquiry);
     setShowResponseModal(true);
@@ -328,7 +342,7 @@ function AdminDashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold">Tere, Aleksandr!</h1>
           <button
             onClick={handleLogout}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
@@ -568,12 +582,20 @@ function AdminDashboard() {
                           </select>
                         </td>
                         <td className="py-3 px-4">
-                          <button
-                            onClick={() => openResponseModal(inquiry)}
-                            className="px-3 py-1 bg-primary-600 text-white rounded hover:bg-primary-700 text-sm"
-                          >
-                            Vasta
-                          </button>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => openResponseModal(inquiry)}
+                              className="px-3 py-1 bg-primary-600 text-white rounded hover:bg-primary-700 text-sm"
+                            >
+                              Vasta
+                            </button>
+                            <button
+                              onClick={() => deleteInquiry(inquiry.id)}
+                              className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                            >
+                              Kustuta
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))

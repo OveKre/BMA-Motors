@@ -193,6 +193,20 @@ router.put('/paringud/:id', authenticate, authorize('admin', 'manager'), asyncHa
 }));
 
 /**
+ * @route   DELETE /api/admin/paringud/:id
+ * @desc    Kustuta varuosapäring
+ * @access  Private/Admin
+ */
+router.delete('/paringud/:id', authenticate, authorize('admin'), asyncHandler(async (req, res) => {
+    await SparePartInquiry.delete(req.params.id);
+
+    res.json({
+        success: true,
+        message: 'Päring kustutatud'
+    });
+}));
+
+/**
  * @route   POST /api/admin/teenused
  * @desc    Loo uus teenus
  * @access  Private/Admin

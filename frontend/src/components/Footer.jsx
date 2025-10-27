@@ -11,13 +11,12 @@ function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">BMA MOTORS</h3>
             <p className="text-gray-400">
-              Professionaalne autoremondi töökoda
             </p>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">{t('nav.contact')}</h4>
-            <p className="text-gray-400">E-mail: info@bmamotors.ee</p>
-            <p className="text-gray-400">Tel: +372 XXXX XXXX</p>
+            <p className="text-gray-400">E-mail: info@bmamotors.eu</p>
+            <p className="text-gray-400">Tel: +372 55 666 310</p>
             <p className="text-gray-400">Aadress: Tallinn, Estonia</p>
           </div>
           <div>

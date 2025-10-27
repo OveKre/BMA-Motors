@@ -1,4 +1,23 @@
+// Faili alguses
+import pilt1 from '../images/pilt1.jpg';
+import pilt2 from '../images/pilt2.jpg';
+import pilt3 from '../images/pilt3.jpg';
+import pilt4 from '../images/pilt4.jpg';
+import pilt5 from '../images/pilt5.jpg';
+import pilt6 from '../images/pilt6.jpg';
+
+
 function Gallery() {
+  // Galerii piltide andmed
+  const galleryImages = [
+    { id: 1, src: pilt1, title: 'BMW remont', description: 'Mootori kapitalremont' },
+    { id: 2, src: pilt2, title: 'BMW diagnostika', description: 'Common rail süsteemi hooldus' },
+    { id: 3, src: pilt3, title: 'Veermiku remont', description: 'Veermiku täielik hooldus' },
+    { id: 4, src: pilt4, title: 'Käigukasti hooldus', description: 'DSG käigukasti hooldus' },
+    { id: 5, src: pilt5, title: 'Pidurisüsteem', description: 'Piduriklotside vahetus' },
+    { id: 6, src: pilt6, title: 'Elektritööd', description: 'Elektroonika diagnostika' },
+  ];
+
   return (
     <div>
       {/* Hero Section */}
@@ -28,14 +47,18 @@ function Gallery() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
-            <div key={item} className="card overflow-hidden p-0">
-              <div className="h-64 bg-gray-200 flex items-center justify-center">
-                <span className="text-gray-400">Pilt {item}</span>
+          {galleryImages.map((image) => (
+            <div key={image.id} className="card overflow-hidden p-0 hover:shadow-xl transition-shadow duration-300">
+              <div className="h-64 bg-gray-200 overflow-hidden">
+                <img 
+                  src={image.src} 
+                  alt={image.title}
+                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                />
               </div>
               <div className="p-4">
-                <h3 className="font-semibold">Projekt {item}</h3>
-                <p className="text-sm text-gray-600">Kirjeldus</p>
+                <h3 className="font-semibold text-lg">{image.title}</h3>
+                <p className="text-sm text-gray-600">{image.description}</p>
               </div>
             </div>
           ))}

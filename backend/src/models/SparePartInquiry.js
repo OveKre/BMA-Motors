@@ -8,7 +8,8 @@ class SparePartInquiry {
     static async create(inquiryData) {
         const {
             client_name, client_email, client_phone,
-            car_make, car_model, car_year, vin_code,
+            car_make, car_model, car_year, 
+            license_plate, // Numbrimärk (kasutab vin_code välja andmebaasis)
             sparepart_name, sparepart_description
         } = inquiryData;
 
@@ -28,7 +29,7 @@ class SparePartInquiry {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
             [
                 client.id, client_name, client_email, client_phone,
-                car_make, car_model, car_year, vin_code,
+                car_make, car_model, car_year, license_plate, // Numbrimärk salvestub vin_code väljale
                 sparepart_name, sparepart_description
             ]
         );

@@ -19,14 +19,18 @@ const dbConfig = {
     database: 'bma_motors'
 };
 
-// Eesti turul populaarsed margid
+// Kõik varuosapäringu markide list (49 marki)
 const POPULAR_MAKES = [
-    'Audi', 'BMW', 'Mercedes-Benz', 'Volkswagen', 'Opel', 'Skoda',
-    'Toyota', 'Honda', 'Nissan', 'Mazda', 'Lexus', 'Subaru',
-    'Ford', 'Volvo', 'Peugeot', 'Renault', 'Citroen',
-    'Hyundai', 'Kia', 'SEAT', 'Fiat', 'Chevrolet',
-    'Porsche', 'Land Rover', 'Jaguar', 'Jeep', 'Mitsubishi',
-    'Suzuki', 'Dacia', 'Mini'
+    'Alfa Romeo', 'Audi', 'Bentley', 'BMW', 'Cadillac',
+    'Chevrolet', 'Chrysler', 'Citroen', 'Dacia', 'Daewoo',
+    'Dodge', 'Fiat', 'Ford', 'GMC', 'Honda', 'Hyundai',
+    'Infiniti', 'Isuzu', 'Jaguar', 'Jeep', 'Kia', 'Lancia',
+    'Land Rover', 'Lexus', 'Lincoln', 'Mazda', 'Mercedes-Benz',
+    'MINI', 'Mitsubishi', 'Nissan', 'Opel', 'Peugeot',
+    'Porsche', 'Renault', 'Rolls-Royce', 'Rover', 'Saab',
+    'SEAT', 'Skoda', 'Smart', 'SsangYong', 'Subaru',
+    'Suzuki', 'Tesla', 'Toyota', 'VAZ', 'Volkswagen', 'Volvo'
+    // 'Other' ei ole päris mark, seda ei impordi
 ];
 
 // Sleep helper
@@ -65,16 +69,17 @@ async function fetchModels(makeName) {
  * Leia riigi kood margi põhjal
  */
 function getCountryForMake(makeName) {
-    const german = ['Audi', 'BMW', 'Mercedes-Benz', 'Volkswagen', 'Opel', 'Porsche'];
-    const japanese = ['Toyota', 'Honda', 'Nissan', 'Mazda', 'Lexus', 'Subaru', 'Mitsubishi', 'Suzuki'];
+    const german = ['Audi', 'BMW', 'Mercedes-Benz', 'Volkswagen', 'Opel', 'Porsche', 'Smart'];
+    const japanese = ['Toyota', 'Honda', 'Nissan', 'Mazda', 'Lexus', 'Subaru', 'Mitsubishi', 'Suzuki', 'Infiniti', 'Isuzu'];
     const french = ['Peugeot', 'Renault', 'Citroen', 'Dacia'];
-    const korean = ['Hyundai', 'Kia'];
+    const korean = ['Hyundai', 'Kia', 'SsangYong', 'Daewoo'];
     const czech = ['Skoda'];
-    const swedish = ['Volvo'];
-    const british = ['Land Rover', 'Jaguar', 'Mini'];
-    const american = ['Ford', 'Chevrolet', 'Jeep'];
-    const italian = ['Fiat'];
+    const swedish = ['Volvo', 'Saab'];
+    const british = ['Land Rover', 'Jaguar', 'MINI', 'Bentley', 'Rolls-Royce', 'Rover', 'Lancia'];
+    const american = ['Ford', 'Chevrolet', 'Jeep', 'Cadillac', 'Lincoln', 'Chrysler', 'Dodge', 'GMC', 'Tesla'];
+    const italian = ['Fiat', 'Alfa Romeo'];
     const spanish = ['SEAT'];
+    const russian = ['VAZ'];
     
     if (german.includes(makeName)) return 'Germany';
     if (japanese.includes(makeName)) return 'Japan';
@@ -86,6 +91,7 @@ function getCountryForMake(makeName) {
     if (american.includes(makeName)) return 'USA';
     if (italian.includes(makeName)) return 'Italy';
     if (spanish.includes(makeName)) return 'Spain';
+    if (russian.includes(makeName)) return 'Russia';
     
     return 'Unknown';
 }

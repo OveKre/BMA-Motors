@@ -7,37 +7,79 @@ import api from '../api/axios';
 
 function SpareParts() {
   const { t, i18n } = useTranslation();
-  const [carMakes, setCarMakes] = useState([]);
   const [carModels, setCarModels] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchCarMakes();
-  }, []);
+  // Fikseeritud automarkide list
+  const carMakes = [
+    'Alfa Romeo',
+    'Audi',
+    'Bentley',
+    'BMW',
+    'Cadillac',
+    'Chevrolet',
+    'Chrysler',
+    'Citroen',
+    'Dacia',
+    'Daewoo',
+    'Dodge',
+    'Fiat',
+    'Ford',
+    'GMC',
+    'Honda',
+    'Hyundai',
+    'Infiniti',
+    'Isuzu',
+    'Jaguar',
+    'Jeep',
+    'Kia',
+    'Lancia',
+    'Land Rover',
+    'Lexus',
+    'Lincoln',
+    'Mazda',
+    'Mercedes-Benz',
+    'MINI',
+    'Mitsubishi',
+    'Nissan',
+    'Opel',
+    'Peugeot',
+    'Porsche',
+    'Renault',
+    'Rolls-Royce',
+    'Rover',
+    'Saab',
+    'SEAT',
+    'Skoda',
+    'Smart',
+    'SsangYong',
+    'Subaru',
+    'Suzuki',
+    'Tesla',
+    'Toyota',
+    'VAZ',
+    'Volkswagen',
+    'Volvo',
+    'Other'
+  ];
 
-  const fetchCarMakes = async () => {
+  const fetchCarModels = async (makeName) => {
     try {
-      const response = await api.get('/cars/makes');
-      console.log('Car makes response:', response.data);
-      // API returns array directly or in data property
+      // Otsi make_id andmebaasist make_display nime järgi
+      const response = await api.get(`/cars/makes`);
       const makes = Array.isArray(response.data) ? response.data : response.data.data || [];
-      setCarMakes(makes);
-    } catch (error) {
-      console.error('Error fetching car makes:', error);
-      toast.error('Failed to load car makes');
-    }
-  };
-
-  const fetchCarModels = async (makeId) => {
-    try {
-      const response = await api.get(`/cars/models/${makeId}`);
-      console.log('Car models response:', response.data);
-      // API returns array directly or in data property
-      const models = Array.isArray(response.data) ? response.data : response.data.data || [];
-      setCarModels(models);
+      const selectedMake = makes.find(m => m.make_display === makeName);
+      
+      if (selectedMake) {
+        const modelsResponse = await api.get(`/cars/models/${selectedMake.make_id}`);
+        const models = Array.isArray(modelsResponse.data) ? modelsResponse.data : modelsResponse.data.data || [];
+        setCarModels(models);
+      } else {
+        setCarModels([]);
+      }
     } catch (error) {
       console.error('Error fetching car models:', error);
-      toast.error('Failed to load car models');
+      setCarModels([]);
     }
   };
 
@@ -58,7 +100,7 @@ function SpareParts() {
       car_make: '',
       car_model: '',
       car_year: '',
-      vin_code: '',
+      license_plate: '',
       sparepart_name: '',
       sparepart_description: '',
       language: i18n.language
@@ -82,11 +124,13 @@ function SpareParts() {
   });
 
   const handleMakeChange = (e) => {
-    const makeId = e.target.value;
-    formik.setFieldValue('car_make', makeId);
+    const makeName = e.target.value;
+    formik.setFieldValue('car_make', makeName);
     formik.setFieldValue('car_model', '');
-    if (makeId) {
-      fetchCarModels(makeId);
+    if (makeName) {
+      fetchCarModels(makeName);
+    } else {
+      setCarModels([]);
     }
   };
 
@@ -174,8 +218,8 @@ function SpareParts() {
                 >
                   <option value="">Vali mark</option>
                   {carMakes.map((make) => (
-                    <option key={make.make_id} value={make.make_id}>
-                      {make.make_display}
+                    <option key={make} value={make}>
+                      {make}
                     </option>
                   ))}
                 </select>
@@ -216,20 +260,22 @@ function SpareParts() {
               </div>
             </div>
 
-            {/* VIN Code */}
+            {/* License Plate */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('spareparts.vin')}
+                Auto numbrimärk
               </label>
               <input
                 type="text"
-                name="vin_code"
-                value={formik.values.vin_code}
+                name="license_plate"
+                value={formik.values.license_plate}
                 onChange={formik.handleChange}
                 className="input-field"
-                maxLength="17"
-                placeholder="17-kohaline VIN kood"
+                placeholder="nt. 123ABC"
+                maxLength="10"
+                style={{ textTransform: 'uppercase' }}
               />
+              <p className="text-xs text-gray-500 mt-1">Numbrimärk aitab meil täpsemalt varuosa leida</p>
             </div>
 
             {/* Part Info */}

@@ -154,11 +154,11 @@ function Contact() {
               <div className="space-y-3">
                 <div>
                   <p className="text-sm text-gray-600">E-mail</p>
-                  <p className="font-medium">info@bmamotors.ee</p>
+                  <p className="font-medium">info@bmamotors.eu</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Telefon</p>
-                  <p className="font-medium">+372 XXXX XXXX</p>
+                  <p className="font-medium">+372 55 666 310</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Aadress</p>

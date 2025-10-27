@@ -7,6 +7,7 @@ import api from '../api/axios';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Booking.css';
+import bmwE34 from '../images/bmwE34.jpg';
 
 function Booking() {
   const { t, i18n } = useTranslation();
@@ -53,29 +54,10 @@ function Booking() {
     },
   });
 
-  // Fetch month availability when component mounts or month changes
-  useEffect(() => {
-    fetchMonthAvailability(selectedDate);
-  }, [selectedDate.getMonth(), selectedDate.getFullYear()]);
-
   // Fetch slots for initial date
   useEffect(() => {
     fetchAvailableSlots(selectedDate);
   }, []);
-
-  const fetchMonthAvailability = async (date) => {
-    try {
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1; // JavaScript months are 0-indexed
-      const response = await api.get(`/booking/month-availability?year=${year}&month=${month}`);
-      
-      if (response.data.success) {
-        setMonthAvailability(response.data.data);
-      }
-    } catch (error) {
-      console.error('Error fetching month availability:', error);
-    }
-  };
 
   const fetchAvailableSlots = async (date) => {
     try {
@@ -117,43 +99,6 @@ function Booking() {
     fetchAvailableSlots(date);
   };
 
-  // Custom tile className for calendar
-  const getTileClassName = ({ date, view }) => {
-    if (view !== 'month') return null;
-    
-    const dateStr = date.toISOString().split('T')[0];
-    const availability = monthAvailability[dateStr];
-    
-    if (!availability) return null;
-    
-    // Kui kõik ajad broneeritud - punane
-    if (availability.isFull) {
-      return 'fully-booked';
-    }
-    
-    // Kui üle 70% broneeritud - oranž
-    if (availability.availabilityPercentage < 30) {
-      return 'mostly-booked';
-    }
-    
-    // Kui alla 50% vaba - kollane
-    if (availability.availabilityPercentage < 50) {
-      return 'partially-booked';
-    }
-    
-    return null;
-  };
-
-  // Disable fully booked dates
-  const tileDisabled = ({ date, view }) => {
-    if (view !== 'month') return false;
-    
-    const dateStr = date.toISOString().split('T')[0];
-    const availability = monthAvailability[dateStr];
-    
-    return availability?.isFull || false;
-  };
-
   // Generate all possible time slots
   const getAllTimeSlots = () => {
     const slots = [];
@@ -170,7 +115,7 @@ function Booking() {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop)',
+            backgroundImage: `url(${bmwE34})`,
             filter: 'brightness(0.6)'
           }}
         >
@@ -202,25 +147,7 @@ function Booking() {
                 value={selectedDate}
                 minDate={new Date()}
                 className="mx-auto booking-calendar"
-                tileClassName={getTileClassName}
-                tileDisabled={tileDisabled}
               />
-              
-              {/* Legend */}
-              <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-red-500 rounded"></div>
-                  <span>Kõik ajad broneeritud</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-orange-400 rounded"></div>
-                  <span>Vähe kohti</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-yellow-300 rounded"></div>
-                  <span>Poolik</span>
-                </div>
-              </div>
             </div>
 
             {/* Time Slots */}
@@ -244,21 +171,19 @@ function Booking() {
                         isSelected
                           ? 'bg-primary-600 text-white ring-2 ring-primary-300'
                           : isBooked
-                          ? 'bg-red-100 text-red-600 cursor-not-allowed line-through'
-                          : isAvailable
-                          ? 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-300'
-                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
                       }`}
-                      title={isBooked ? 'Broneeritud' : isAvailable ? 'Vaba' : 'Pole saadaval'}
+                      title={isBooked ? 'Broneeritud' : 'Vaba'}
                     >
-                      {slot}
+                      <span className={isBooked ? 'line-through' : ''}>{slot}</span>
                     </button>
                   );
                 })}
               </div>
               {bookedSlots.length > 0 && (
                 <p className="text-sm text-gray-600 mt-2">
-                  ⚠️ Punased ajad on juba broneeritud
+                  ℹ️ Läbikriipsutatud ajad on juba broneeritud
                 </p>
               )}
             </div>

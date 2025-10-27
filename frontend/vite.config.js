@@ -5,7 +5,16 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    proxy: {
+   
+   /* host: true,
+    allowedHosts: [
+      'fa9d7c141422.ngrok-free.app', // Sinu ngrok URL
+      'localhost',
+      '.ngrok-free.app' // Luba kõik ngrok URL-id
+    ]
+  }
+})  */
+      proxy: {
       '/api': {
         target: 'http://localhost:5000',
         changeOrigin: true,
