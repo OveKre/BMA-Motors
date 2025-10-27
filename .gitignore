@@ -21,13 +21,9 @@ logs/
 *.sql.backup
 *.db
 
-# Uploads
+# Uploads (dünaamilised kasutaja üleslaaditud failid)
 uploads/
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.pdf
+# Märkus: src/images/ staatilised pildid on lubatud
 
 # Test coverage
 coverage/
