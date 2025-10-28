@@ -16,14 +16,18 @@ function AdminDashboard() {
   const [messages, setMessages] = useState([]);
   const [messageStats, setMessageStats] = useState({ total: 0, unread: 0, replied: 0 });
   const [services, setServices] = useState([]);
-  const [activeTab, setActiveTab] = useState('bookings'); // 'bookings', 'inquiries', 'messages', or 'services'
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [activeTab, setActiveTab] = useState('bookings'); // 'bookings', 'inquiries', 'messages', 'services', or 'gallery'
   const [loading, setLoading] = useState(true);
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
+  const [selectedGalleryImage, setSelectedGalleryImage] = useState(null);
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [showServiceModal, setShowServiceModal] = useState(false);
+  const [showGalleryModal, setShowGalleryModal] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [responseData, setResponseData] = useState({
     price: '',
     availability: '',
@@ -41,6 +45,18 @@ function AdminDashboard() {
     price: '',
     duration_minutes: '',
     is_active: true
+  });
+
+  const [galleryData, setGalleryData] = useState({
+    title_est: '',
+    title_eng: '',
+    title_rus: '',
+    description_est: '',
+    description_eng: '',
+    description_rus: '',
+    display_order: 0,
+    is_active: true,
+    image: null
   });
 
   useEffect(() => {
@@ -98,6 +114,11 @@ function AdminDashboard() {
       const servicesResponse = await api.get('/services?active=false');
       console.log('Services response:', servicesResponse.data);
       setServices(servicesResponse.data?.data || servicesResponse.data || []);
+
+      // Fetch gallery images
+      const galleryResponse = await api.get('/admin/galerii');
+      console.log('Gallery response:', galleryResponse.data);
+      setGalleryImages(galleryResponse.data?.data || galleryResponse.data || []);
 
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -319,6 +340,128 @@ function AdminDashboard() {
     }
   };
 
+  // Gallery management functions
+  const openGalleryModal = (image = null) => {
+    if (image) {
+      setSelectedGalleryImage(image);
+      setGalleryData({
+        title_est: image.title_est || '',
+        title_eng: image.title_eng || '',
+        title_rus: image.title_rus || '',
+        description_est: image.description_est || '',
+        description_eng: image.description_eng || '',
+        description_rus: image.description_rus || '',
+        display_order: image.display_order || 0,
+        is_active: image.is_active !== undefined ? image.is_active : true,
+        image: null
+      });
+    } else {
+      setSelectedGalleryImage(null);
+      setGalleryData({
+        title_est: '',
+        title_eng: '',
+        title_rus: '',
+        description_est: '',
+        description_eng: '',
+        description_rus: '',
+        display_order: 0,
+        is_active: true,
+        image: null
+      });
+    }
+    setShowGalleryModal(true);
+  };
+
+  const closeGalleryModal = () => {
+    setShowGalleryModal(false);
+    setSelectedGalleryImage(null);
+    setGalleryData({
+      title_est: '',
+      title_eng: '',
+      title_rus: '',
+      description_est: '',
+      description_eng: '',
+      description_rus: '',
+      display_order: 0,
+      is_active: true,
+      image: null
+    });
+  };
+
+  const handleGallerySubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      if (selectedGalleryImage) {
+        // Update existing image
+        await api.put(`/admin/galerii/${selectedGalleryImage.id}`, {
+          title_est: galleryData.title_est,
+          title_eng: galleryData.title_eng,
+          title_rus: galleryData.title_rus,
+          description_est: galleryData.description_est,
+          description_eng: galleryData.description_eng,
+          description_rus: galleryData.description_rus,
+          display_order: galleryData.display_order,
+          is_active: galleryData.is_active
+        });
+        toast.success('Pilt uuendatud');
+      } else {
+        // Upload new image
+        if (!galleryData.image) {
+          toast.error('Palun vali pilt');
+          return;
+        }
+
+        setUploadingImage(true);
+        const formData = new FormData();
+        formData.append('image', galleryData.image);
+        formData.append('title_est', galleryData.title_est);
+        formData.append('title_eng', galleryData.title_eng);
+        formData.append('title_rus', galleryData.title_rus);
+        formData.append('description_est', galleryData.description_est);
+        formData.append('description_eng', galleryData.description_eng);
+        formData.append('description_rus', galleryData.description_rus);
+        formData.append('display_order', galleryData.display_order);
+        formData.append('is_active', galleryData.is_active);
+
+        await api.post('/admin/galerii', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        toast.success('Pilt üles laaditud');
+      }
+      closeGalleryModal();
+      fetchDashboardData();
+    } catch (error) {
+      toast.error(selectedGalleryImage ? 'Viga pildi uuendamisel' : 'Viga pildi üleslaad imisel');
+      console.error('Gallery error:', error);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const deleteGalleryImage = async (imageId) => {
+    if (!window.confirm('Kas oled kindel, et soovid pildi kustutada?')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/admin/galerii/${imageId}`);
+      toast.success('Pilt kustutatud');
+      fetchDashboardData();
+    } catch (error) {
+      toast.error('Viga pildi kustutamisel');
+    }
+  };
+
+  const getImageUrl = (imagePath) => {
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    return `${import.meta.env.VITE_API_URL.replace('/api', '')}${imagePath}`;
+  };
+
   const getStatusColor = (status) => {
     const colors = {
       'pending': 'bg-yellow-100 text-yellow-800',
@@ -426,6 +569,16 @@ function AdminDashboard() {
               }`}
             >
               Teenused ({services.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('gallery')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'gallery'
+                  ? 'border-primary-600 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Galerii ({galleryImages.length})
             </button>
           </nav>
         </div>
@@ -768,6 +921,69 @@ function AdminDashboard() {
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {/* Gallery Table */}
+        {activeTab === 'gallery' && (
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Galerii haldamine</h2>
+              <button
+                onClick={() => openGalleryModal()}
+                className="px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700"
+              >
+                + Lisa pilt
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {galleryImages.length === 0 ? (
+                <div className="col-span-3 text-center py-12 text-gray-500">
+                  Galerii on tühi
+                </div>
+              ) : (
+                galleryImages.map((image) => (
+                  <div key={image.id} className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                    <div className="h-48 bg-gray-200 overflow-hidden">
+                      <img
+                        src={getImageUrl(image.image_path)}
+                        alt={image.title_est}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-semibold text-lg mb-2">{image.title_est || 'Pealkirjata'}</h3>
+                      <p className="text-sm text-gray-600 mb-3">{image.description_est || ''}</p>
+                      <div className="flex justify-between items-center">
+                        <span className={`text-xs px-2 py-1 rounded ${
+                          image.is_active 
+                            ? 'bg-green-100 text-green-700' 
+                            : 'bg-red-100 text-red-700'
+                        }`}>
+                          {image.is_active ? 'Aktiivne' : 'Mitteaktiivne'}
+                        </span>
+                        <span className="text-xs text-gray-500">Järjekord: {image.display_order}</span>
+                      </div>
+                      <div className="flex gap-2 mt-4">
+                        <button
+                          onClick={() => openGalleryModal(image)}
+                          className="flex-1 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                        >
+                          Muuda
+                        </button>
+                        <button
+                          onClick={() => deleteGalleryImage(image.id)}
+                          className="flex-1 px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                        >
+                          Kustuta
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}
@@ -1175,6 +1391,164 @@ function AdminDashboard() {
                     Sulge
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Gallery Modal */}
+        {showGalleryModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-2xl font-bold">
+                    {selectedGalleryImage ? 'Muuda pilti' : 'Lisa uus pilt'}
+                  </h2>
+                  <button
+                    onClick={closeGalleryModal}
+                    className="text-gray-500 hover:text-gray-700 text-2xl"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <form onSubmit={handleGallerySubmit}>
+                  {/* Image upload */}
+                  {!selectedGalleryImage && (
+                    <div className="mb-6">
+                      <label className="block text-sm font-medium mb-2">Pilt *</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        required
+                        onChange={(e) => setGalleryData({ ...galleryData, image: e.target.files[0] })}
+                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Maksimaalne failisuurus: 5MB. Lubatud: JPG, PNG, GIF, WebP</p>
+                    </div>
+                  )}
+
+                  {/* Estonian fields */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-primary-600">Eesti keel</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Pealkiri (EST)</label>
+                        <input
+                          type="text"
+                          value={galleryData.title_est}
+                          onChange={(e) => setGalleryData({ ...galleryData, title_est: e.target.value })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Kirjeldus (EST)</label>
+                        <textarea
+                          value={galleryData.description_est}
+                          onChange={(e) => setGalleryData({ ...galleryData, description_est: e.target.value })}
+                          rows="2"
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* English fields */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-primary-600">English</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Title (ENG)</label>
+                        <input
+                          type="text"
+                          value={galleryData.title_eng}
+                          onChange={(e) => setGalleryData({ ...galleryData, title_eng: e.target.value })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Description (ENG)</label>
+                        <textarea
+                          value={galleryData.description_eng}
+                          onChange={(e) => setGalleryData({ ...galleryData, description_eng: e.target.value })}
+                          rows="2"
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Russian fields */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-primary-600">Русский</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Заголовок (RUS)</label>
+                        <input
+                          type="text"
+                          value={galleryData.title_rus}
+                          onChange={(e) => setGalleryData({ ...galleryData, title_rus: e.target.value })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Описание (RUS)</label>
+                        <textarea
+                          value={galleryData.description_rus}
+                          onChange={(e) => setGalleryData({ ...galleryData, description_rus: e.target.value })}
+                          rows="2"
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Display settings */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-primary-600">Kuva seaded</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Kuva järjekord</label>
+                        <input
+                          type="number"
+                          value={galleryData.display_order}
+                          onChange={(e) => setGalleryData({ ...galleryData, display_order: parseInt(e.target.value) || 0 })}
+                          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="flex items-center space-x-2 mt-6">
+                          <input
+                            type="checkbox"
+                            checked={galleryData.is_active}
+                            onChange={(e) => setGalleryData({ ...galleryData, is_active: e.target.checked })}
+                            className="w-4 h-4 text-primary-600 focus:ring-primary-500"
+                          />
+                          <span className="text-sm font-medium">Aktiivne (nähtav lehel)</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end gap-4">
+                    <button
+                      type="button"
+                      onClick={closeGalleryModal}
+                      className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
+                      disabled={uploadingImage}
+                    >
+                      Tühista
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700 disabled:opacity-50"
+                      disabled={uploadingImage}
+                    >
+                      {uploadingImage ? 'Laadin üles...' : (selectedGalleryImage ? 'Uuenda' : 'Lisa pilt')}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

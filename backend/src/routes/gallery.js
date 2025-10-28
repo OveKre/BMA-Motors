@@ -1,28 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { query } = require('../config/database');
+const Gallery = require('../models/Gallery');
 const { asyncHandler } = require('../middleware/errorHandler');
 
 /**
  * @route   GET /api/gallery
- * @desc    Hangi galerii pildid
+ * @desc    Hangi galerii pildid (public - only active)
  * @access  Public
  */
 router.get('/', asyncHandler(async (req, res) => {
-    const { category, limit = 50 } = req.query;
-
-    let sql = 'SELECT * FROM gallery_images WHERE is_active = true';
-    const params = [];
-
-    if (category) {
-        sql += ' AND category = ?';
-        params.push(category);
-    }
-
-    sql += ' ORDER BY display_order ASC, created_at DESC LIMIT ?';
-    params.push(parseInt(limit));
-
-    const images = await query(sql, params);
+    const images = await Gallery.getAll();
 
     res.json({
         success: true,
@@ -37,12 +24,9 @@ router.get('/', asyncHandler(async (req, res) => {
  * @access  Public
  */
 router.get('/:id', asyncHandler(async (req, res) => {
-    const results = await query(
-        'SELECT * FROM gallery_images WHERE id = ?',
-        [req.params.id]
-    );
+    const image = await Gallery.getById(req.params.id);
 
-    if (!results || results.length === 0) {
+    if (!image) {
         return res.status(404).json({
             success: false,
             error: { message: 'Pilti ei leitud' }
@@ -51,7 +35,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
     res.json({
         success: true,
-        data: results[0]
+        data: image
     });
 }));
 

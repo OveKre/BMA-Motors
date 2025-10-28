@@ -1,22 +1,49 @@
-// Faili alguses
-import pilt1 from '../images/pilt1.jpg';
-import pilt2 from '../images/pilt2.jpg';
-import pilt3 from '../images/pilt3.jpg';
-import pilt4 from '../images/pilt4.jpg';
-import pilt5 from '../images/pilt5.jpg';
-import pilt6 from '../images/pilt6.jpg';
-
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import api from '../api/axios';
 
 function Gallery() {
-  // Galerii piltide andmed
-  const galleryImages = [
-    { id: 1, src: pilt1, title: 'BMW remont', description: 'Mootori kapitalremont' },
-    { id: 2, src: pilt2, title: 'BMW diagnostika', description: 'Common rail süsteemi hooldus' },
-    { id: 3, src: pilt3, title: 'Veermiku remont', description: 'Veermiku täielik hooldus' },
-    { id: 4, src: pilt4, title: 'Käigukasti hooldus', description: 'DSG käigukasti hooldus' },
-    { id: 5, src: pilt5, title: 'Pidurisüsteem', description: 'Piduriklotside vahetus' },
-    { id: 6, src: pilt6, title: 'Elektritööd', description: 'Elektroonika diagnostika' },
-  ];
+  const { i18n } = useTranslation();
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchGalleryImages();
+  }, []);
+
+  const fetchGalleryImages = async () => {
+    try {
+      const response = await api.get('/gallery');
+      setGalleryImages(response.data.data || []);
+    } catch (error) {
+      console.error('Error fetching gallery images:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getImageUrl = (imagePath) => {
+    // If path starts with http, return as is
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    // Otherwise prepend API URL
+    return `${import.meta.env.VITE_API_URL.replace('/api', '')}${imagePath}`;
+  };
+
+  const getTitle = (image) => {
+    const lang = i18n.language;
+    if (lang === 'eng' && image.title_eng) return image.title_eng;
+    if (lang === 'rus' && image.title_rus) return image.title_rus;
+    return image.title_est || 'BMW remont';
+  };
+
+  const getDescription = (image) => {
+    const lang = i18n.language;
+    if (lang === 'eng' && image.description_eng) return image.description_eng;
+    if (lang === 'rus' && image.description_rus) return image.description_rus;
+    return image.description_est || '';
+  };
 
   return (
     <div>
@@ -45,26 +72,35 @@ function Gallery() {
 
       <div className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {galleryImages.map((image) => (
-            <div key={image.id} className="card overflow-hidden p-0 hover:shadow-xl transition-shadow duration-300">
-              <div className="h-64 bg-gray-200 overflow-hidden">
-                <img 
-                  src={image.src} 
-                  alt={image.title}
-                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-lg">{image.title}</h3>
-                <p className="text-sm text-gray-600">{image.description}</p>
-              </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-xl text-gray-600">Laadimine...</p>
             </div>
-          ))}
+          ) : galleryImages.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-xl text-gray-600">Galerii on tühi</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {galleryImages.map((image) => (
+                <div key={image.id} className="card overflow-hidden p-0 hover:shadow-xl transition-shadow duration-300">
+                  <div className="h-64 bg-gray-200 overflow-hidden">
+                    <img 
+                      src={getImageUrl(image.image_path)} 
+                      alt={getTitle(image)}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-lg">{getTitle(image)}</h3>
+                    <p className="text-sm text-gray-600">{getDescription(image)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-    </div>
     </div>
   );
 }

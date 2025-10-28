@@ -10,7 +10,9 @@ const { asyncHandler, handleValidationError, AppError } = require('../middleware
 const Booking = require('../models/Booking');
 const Service = require('../models/Service');
 const SparePartInquiry = require('../models/SparePartInquiry');
+const Gallery = require('../models/Gallery');
 const logger = require('../config/logger');
+const upload = require('../middleware/upload');
 
 /**
  * @route   POST /api/admin/login
@@ -467,6 +469,91 @@ router.delete('/sonumid/:id', authenticate, authorize('admin'), asyncHandler(asy
     res.json({
         success: true,
         message: 'Sõnum kustutatud'
+    });
+}));
+
+/**
+ * Gallery Management Routes
+ */
+
+// Get all gallery images (admin - includes inactive)
+router.get('/galerii', authenticate, asyncHandler(async (req, res) => {
+    const images = await Gallery.getAllAdmin();
+    res.json({
+        success: true,
+        data: images
+    });
+}));
+
+// Upload new gallery image
+router.post('/galerii', authenticate, upload.single('image'), asyncHandler(async (req, res) => {
+    if (!req.file) {
+        throw new AppError('Pilt on kohustuslik', 400);
+    }
+
+    const imageData = {
+        image_path: `/uploads/gallery/${req.file.filename}`,
+        title_est: req.body.title_est || '',
+        title_eng: req.body.title_eng || '',
+        title_rus: req.body.title_rus || '',
+        description_est: req.body.description_est || '',
+        description_eng: req.body.description_eng || '',
+        description_rus: req.body.description_rus || '',
+        display_order: parseInt(req.body.display_order) || 0,
+        is_active: req.body.is_active !== 'false'
+    };
+
+    const imageId = await Gallery.create(imageData);
+
+    res.status(201).json({
+        success: true,
+        message: 'Pilt edukalt üles laaditud',
+        data: { id: imageId, ...imageData }
+    });
+}));
+
+// Update gallery image
+router.put('/galerii/:id', authenticate, asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const updateData = {
+        title_est: req.body.title_est,
+        title_eng: req.body.title_eng,
+        title_rus: req.body.title_rus,
+        description_est: req.body.description_est,
+        description_eng: req.body.description_eng,
+        description_rus: req.body.description_rus,
+        display_order: parseInt(req.body.display_order) || 0,
+        is_active: req.body.is_active !== false
+    };
+
+    await Gallery.update(id, updateData);
+
+    res.json({
+        success: true,
+        message: 'Pilt edukalt uuendatud'
+    });
+}));
+
+// Delete gallery image
+router.delete('/galerii/:id', authenticate, asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const fs = require('fs');
+    const path = require('path');
+
+    // Get image info to delete file
+    const image = await Gallery.getById(id);
+    if (image && image.image_path) {
+        const filePath = path.join(__dirname, '../../', image.image_path);
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+        }
+    }
+
+    await Gallery.delete(id);
+
+    res.json({
+        success: true,
+        message: 'Pilt edukalt kustutatud'
     });
 }));
 
