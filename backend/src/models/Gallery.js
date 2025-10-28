@@ -4,7 +4,7 @@ class Gallery {
   // Get all gallery images
   static async getAll() {
     try {
-      const [rows] = await db.query(
+      const rows = await db.query(
         'SELECT * FROM gallery WHERE is_active = TRUE ORDER BY display_order ASC, created_at DESC'
       );
       return rows;
@@ -16,7 +16,7 @@ class Gallery {
   // Get all images (admin - including inactive)
   static async getAllAdmin() {
     try {
-      const [rows] = await db.query(
+      const rows = await db.query(
         'SELECT * FROM gallery ORDER BY display_order ASC, created_at DESC'
       );
       return rows;
@@ -28,7 +28,7 @@ class Gallery {
   // Get single image by ID
   static async getById(id) {
     try {
-      const [rows] = await db.query('SELECT * FROM gallery WHERE id = ?', [id]);
+      const rows = await db.query('SELECT * FROM gallery WHERE id = ?', [id]);
       return rows[0];
     } catch (error) {
       throw error;
@@ -50,7 +50,7 @@ class Gallery {
         is_active
       } = data;
 
-      const [result] = await db.query(
+      const result = await db.query(
         `INSERT INTO gallery 
         (image_path, title_est, title_eng, title_rus, description_est, description_eng, description_rus, display_order, is_active) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,

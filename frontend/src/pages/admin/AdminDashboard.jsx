@@ -118,7 +118,9 @@ function AdminDashboard() {
       // Fetch gallery images
       const galleryResponse = await api.get('/admin/galerii');
       console.log('Gallery response:', galleryResponse.data);
-      setGalleryImages(galleryResponse.data?.data || galleryResponse.data || []);
+      const galleryData = galleryResponse.data?.data || galleryResponse.data || [];
+      // Ensure galleryData is always an array
+      setGalleryImages(Array.isArray(galleryData) ? galleryData : []);
 
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -939,7 +941,7 @@ function AdminDashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {galleryImages.length === 0 ? (
+              {!Array.isArray(galleryImages) || galleryImages.length === 0 ? (
                 <div className="col-span-3 text-center py-12 text-gray-500">
                   Galerii on tühi
                 </div>
