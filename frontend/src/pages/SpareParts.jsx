@@ -153,7 +153,7 @@ function SpareParts() {
               {t('spareparts.title')}
             </h1>
             <p className="text-xl text-gray-200 mt-4">
-              Täida vorm ja saadame sulle pakkumise esimesel võimalusel
+              {t('spareparts.subtitle')}
             </p>
           </div>
         </div>
@@ -216,7 +216,7 @@ function SpareParts() {
                   onChange={handleMakeChange}
                   className="input-field"
                 >
-                  <option value="">Vali mark</option>
+                  <option value="">{t('spareparts.selectMake')}</option>
                   {carMakes.map((make) => (
                     <option key={make} value={make}>
                       {make}
@@ -235,7 +235,7 @@ function SpareParts() {
                   className="input-field"
                   disabled={!formik.values.car_make}
                 >
-                  <option value="">Vali mudel</option>
+                  <option value="">{t('spareparts.selectModel')}</option>
                   {carModels.map((model) => (
                     <option key={model.id} value={model.model_name}>
                       {model.model_name}
@@ -253,7 +253,7 @@ function SpareParts() {
                   value={formik.values.car_year}
                   onChange={formik.handleChange}
                   className="input-field"
-                  placeholder="2020"
+                  placeholder={t('spareparts.yearPlaceholder')}
                   min="1900"
                   max={new Date().getFullYear() + 1}
                 />
@@ -263,7 +263,7 @@ function SpareParts() {
             {/* License Plate */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Auto numbrimärk
+                {t('spareparts.licensePlate')}
               </label>
               <input
                 type="text"
@@ -271,11 +271,11 @@ function SpareParts() {
                 value={formik.values.license_plate}
                 onChange={formik.handleChange}
                 className="input-field"
-                placeholder="nt. 123ABC"
+                placeholder={t('spareparts.licensePlatePlaceholder')}
                 maxLength="10"
                 style={{ textTransform: 'uppercase' }}
               />
-              <p className="text-xs text-gray-500 mt-1">Numbrimärk aitab meil täpsemalt varuosa leida</p>
+              <p className="text-xs text-gray-500 mt-1">{t('spareparts.licensePlateHelper')}</p>
             </div>
 
             {/* Part Info */}
@@ -289,7 +289,7 @@ function SpareParts() {
                 value={formik.values.sparepart_name}
                 onChange={formik.handleChange}
                 className="input-field"
-                placeholder="nt. Esitulede komplekt, pidurikettad"
+                placeholder={t('spareparts.partNamePlaceholder')}
               />
             </div>
 
@@ -303,7 +303,7 @@ function SpareParts() {
                 onChange={formik.handleChange}
                 rows={4}
                 className="input-field"
-                placeholder="Täpsusta varuosa detaile (nt. OEM number, asend, seisukord)"
+                placeholder={t('spareparts.descriptionPlaceholder')}
               />
             </div>
 
@@ -312,7 +312,7 @@ function SpareParts() {
               disabled={loading}
               className="btn-primary w-full"
             >
-              {loading ? 'Saadan...' : t('spareparts.submit')}
+              {loading ? t('spareparts.sending') : t('spareparts.submit')}
             </button>
           </form>
         </div>

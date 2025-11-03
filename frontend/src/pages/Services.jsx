@@ -41,149 +41,149 @@ function ServicesContent() {
 
   const serviceData = {
     remonttood: {
-      title: 'Remonttööd',
+      title: t('services.categoryRepair'),
       subcategories: {
         pidurisusteem: {
-          title: 'Pidurisüsteemi hooldus ja remont',
-          description: 'Pidurite kontroll, klotside ja ketaste vahetus, pidurivedeliku vahetus',
+          title: t('services.brakeTitle'),
+          description: t('services.brakeDesc'),
           services: [
-            'Piduriklotside vahetamine',
-            'Piduriketaste kontroll ja vahetus',
-            'Pidurikaliprite remont ja hooldus',
-            'Pidurivedeliku vahetus',
-            'Pidurisüsteemi õhutamine',
-            'Pidurivoolikute ja torustike kontroll',
-            'Käsipiduri reguleerimine ja remont',
-            'Pidurirummude hooldus',
-            'Piduritugevuse mõõtmine'
+            t('services.brakeService1'),
+            t('services.brakeService2'),
+            t('services.brakeService3'),
+            t('services.brakeService4'),
+            t('services.brakeService5'),
+            t('services.brakeService6'),
+            t('services.brakeService7'),
+            t('services.brakeService8'),
+            t('services.brakeService9')
           ]
         },
         veermik: {
-          title: 'Veermiku kontroll ja remont',
-          description: 'Veermiku alaosade kontroll ja vahetus',
+          title: t('services.suspensionTitle'),
+          description: t('services.suspensionDesc'),
           services: [
-            'Veermiku täielik kontroll ja diagnostika',
-            'Amortisaatorite vahetus',
-            'Vedrudega tugilaagrite vahetus',
-            'Vedrude vahetus',
-            'Esiveermiku alumiste hoovastute vahetus',
-            'Esiveermiku ülemiste hoovastute vahetus',
-            'Tagaveermiku hoovastute vahetus',
-            'Stabilisaatorite ja stabilisaatori varrastete vahetus',
-            'Rattallaagrite vahetus',
-            'Juhtliigeste (õliõlgade otsade) vahetus',
-            'Roolivarraste ja roolivarraste otste vahetus',
-            'Õhkvedru süsteemi remont',
-            'Veermiku õõtshoovade vahetus',
-            'Veermiku summutite vahetus'
+            t('services.suspensionService1'),
+            t('services.suspensionService2'),
+            t('services.suspensionService3'),
+            t('services.suspensionService4'),
+            t('services.suspensionService5'),
+            t('services.suspensionService6'),
+            t('services.suspensionService7'),
+            t('services.suspensionService8'),
+            t('services.suspensionService9'),
+            t('services.suspensionService10'),
+            t('services.suspensionService11'),
+            t('services.suspensionService12'),
+            t('services.suspensionService13'),
+            t('services.suspensionService14')
           ]
         },
         kaigukast: {
-          title: 'Käigukastide ja vahekastide hooldus',
-          description: 'Käigukasti õli vahetus, remont ja diagnostika',
+          title: t('services.gearboxTitle'),
+          description: t('services.gearboxDesc'),
           services: [
-            'Käigukasti õli vahetus (manuaalkäigukast)',
-            'Automaatkäigukasti õli ja filtri vahetus',
-            'DSG/CVT käigukastide spetsiaalne hooldus ja remont',
-            'Käigukasti õlitaseme kontroll ja täiendamine',
-            'Käigukasti diagnostika ja veakoodide lugemine',
-            'Siduri vahetus ja reguleerimine',
-            'Siduri hooratta vahetus',
-            'Sidurivedeliku vahetus',
-            'Käiguvahetuse mehhanismi remont',
-            'Käigukasti tihendite ja õlitihendite vahetus',
-            'Pooltelgede ja homokineetiliste liigeste vahetus',
-            'Vahekasti õli vahetus',
-            'Vahekasti ülekande remont',
-            'Käigukasti laagrite vahetus',
-            'Sünkronisaatorite vahetus',
-            'Käigukasti täielik remont (üldremont)',
-            'Käigukasti lekete tuvastamine ja kõrvaldamine'
+            t('services.gearboxService1'),
+            t('services.gearboxService2'),
+            t('services.gearboxService3'),
+            t('services.gearboxService4'),
+            t('services.gearboxService5'),
+            t('services.gearboxService6'),
+            t('services.gearboxService7'),
+            t('services.gearboxService8'),
+            t('services.gearboxService9'),
+            t('services.gearboxService10'),
+            t('services.gearboxService11'),
+            t('services.gearboxService12'),
+            t('services.gearboxService13'),
+            t('services.gearboxService14'),
+            t('services.gearboxService15'),
+            t('services.gearboxService16'),
+            t('services.gearboxService17')
           ]
         },
         mootor: {
-          title: 'Mootorite remont ja vahetus',
-          description: 'Mootori täisremont, vahetus ja komponentide remont',
+          title: t('services.engineTitle'),
+          description: t('services.engineDesc'),
           services: [
-            'Mootori täisremont (üldremont)',
-            'Mootori vahetus uue või taastatud mootori vastu',
-            'Mootori kapitalremont',
-            'Kolbide ja silindrite vahetus',
-            'Väntvõlli ja mootorilaagrite vahetus',
-            'Mootori pea vahetus ja remont',
-            'Mootori pea planeerimine',
-            'Klepikomplekti vahetus',
-            'Tihvtide ja õlitihendite vahetus',
-            'Mootori ketimehhanismi vahetus',
-            'Hammasrihma komplekti vahetus',
-            'Õlipumba vahetus',
-            'Veepumba vahetus',
-            'Generaatori vahetus',
-            'Starteri vahetus',
-            'Turbokompressori remont ja vahetus',
-            'Mootori kompresjoonitesti teostamine'
+            t('services.engineService1'),
+            t('services.engineService2'),
+            t('services.engineService3'),
+            t('services.engineService4'),
+            t('services.engineService5'),
+            t('services.engineService6'),
+            t('services.engineService7'),
+            t('services.engineService8'),
+            t('services.engineService9'),
+            t('services.engineService10'),
+            t('services.engineService11'),
+            t('services.engineService12'),
+            t('services.engineService13'),
+            t('services.engineService14'),
+            t('services.engineService15'),
+            t('services.engineService16'),
+            t('services.engineService17')
           ]
         },
         commonRail: {
-          title: 'Common rail ja kütusesüsteemide remont',
-          description: 'Diiselmootorite kütusesüsteemide diagnostika ja remont',
+          title: t('services.commonRailTitle'),
+          description: t('services.commonRailDesc'),
           services: [
-            'Common rail süsteemi täielik diagnostika',
-            'Kütusesüsteemi rõhu mõõtmine',
-            'Kütusepihustitide vahetus ja kontroll',
-            'Kõrgsurvepumba remont ja vahetus',
-            'Kütuserõhu regulaatori vahetus',
-            'Common rail torustiku remont',
-            'DPF-filtri regenereerimine ja puhastamine',
-            'AdBlue süsteemi diagnostika ja remont',
-            'Kütusefiltriti vahetus',
-            'Kütusesüsteemi õhutamine',
-            'Süüteküünalde ja eelsoojendusküünalde vahetus',
-            'EGR-klapiü puhastamine ja vahetus'
+            t('services.commonRailService1'),
+            t('services.commonRailService2'),
+            t('services.commonRailService3'),
+            t('services.commonRailService4'),
+            t('services.commonRailService5'),
+            t('services.commonRailService6'),
+            t('services.commonRailService7'),
+            t('services.commonRailService8'),
+            t('services.commonRailService9'),
+            t('services.commonRailService10'),
+            t('services.commonRailService11'),
+            t('services.commonRailService12')
           ]
         }
       }
     },
     diagnostika: {
-      title: 'Diagnostika',
+      title: t('services.categoryDiagnostics'),
       subcategories: {
         elektroonika: {
-          title: 'Elektrooniliste süsteemide diagnostika',
-          description: 'Täielik auto diagnostika ja programmeerimine',
+          title: t('services.electronicsTitle'),
+          description: t('services.electronicsDesc'),
           services: [
-            'Mootori diagnostika - täielik veakoodide lugemine ja süsteemide kontroll',
-            'ABS-süsteemi diagnostika ja remont - ohutu pidurdamise tagamine',
-            'Airbag süsteemi diagnostika - turvapadzanike süsteemi kontroll ja remont',
-            'ACC kalibreerimine (ADAS) - aktiivse püsikiirussüsteemi seadistamine',
-            'Programmeerimine ja kodeerimine - auto tarkvarade uuendused ja seadistused'
+            t('services.electronicsService1'),
+            t('services.electronicsService2'),
+            t('services.electronicsService3'),
+            t('services.electronicsService4'),
+            t('services.electronicsService5')
           ]
         }
       }
     },
     elektritood: {
-      title: 'Elektritööd',
+      title: t('services.categoryElectrical'),
       subcategories: {
         lisaseadmed: {
-          title: 'Lisaseadmete paigaldus ja remont',
-          description: 'Auto elektroonika paigaldus',
+          title: t('services.additionalTitle'),
+          description: t('services.additionalDesc'),
           services: [
-            'Alarmide paigaldus - häiresüsteemide paigaldus',
-            'Immobilaiserite paigaldus - auto turvalisuse suurendamine',
-            'Kärukonksude paigaldus - haagiseseadmete paigaldus',
-            'Parkimisandurite paigaldus - parkimisabi süsteemide paigaldus',
-            'Webasto paigaldus ja remont - eelsoojendussüsteemide paigaldus'
+            t('services.additionalService1'),
+            t('services.additionalService2'),
+            t('services.additionalService3'),
+            t('services.additionalService4'),
+            t('services.additionalService5')
           ]
         }
       }
     },
     muud: {
-      title: 'Muud teenused',
+      title: t('services.categoryOther'),
       subcategories: {
         ostuKontroll: {
-          title: 'Ostueelne kontroll',
-          description: 'Täielik auto ülevaatus enne ostmist',
+          title: t('services.inspectionTitle'),
+          description: t('services.inspectionDesc'),
           services: [
-            'Ostueelne üldkontroll - täielik auto kontroll ja hindamine'
+            t('services.inspectionService1')
           ]
         }
       }

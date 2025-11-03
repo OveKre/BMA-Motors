@@ -20,9 +20,10 @@ function Footer() {
             <p className="text-gray-400">Aadress: Tallinn, Estonia</p>
           </div>
           <div>
-            <h4 className="text-lg font-semibold mb-4">Tööaeg</h4>
-            <p className="text-gray-400">E-R: 09:00 - 18:00</p>
-            <p className="text-gray-400">L-P: Suletud</p>
+            <h4 className="text-lg font-semibold mb-4">{t('home.openingHours')}</h4>
+            <p className="text-gray-400">{t('home.monFri')}</p>
+            <p className="text-gray-400">{t('home.saturday')}</p>
+            <p className="text-gray-400">{t('home.sunday')}</p>
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">

@@ -127,7 +127,7 @@ function Booking() {
               {t('booking.title')}
             </h1>
             <p className="text-xl text-gray-200 mt-4">
-              Broneeri sobiv aeg meie töökotta
+              {t('booking.subtitle')}
             </p>
           </div>
         </div>
@@ -146,6 +146,7 @@ function Booking() {
                 onChange={handleDateChange}
                 value={selectedDate}
                 minDate={new Date()}
+                locale={i18n.language === 'est' ? 'et-EE' : i18n.language === 'rus' ? 'ru-RU' : 'en-US'}
                 className="mx-auto booking-calendar"
               />
             </div>
@@ -153,7 +154,7 @@ function Booking() {
             {/* Time Slots */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Vali aeg
+                {t('booking.selectTime')}
               </label>
               <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
                 {getAllTimeSlots().map((slot) => {
@@ -174,7 +175,7 @@ function Booking() {
                           ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                           : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
                       }`}
-                      title={isBooked ? 'Broneeritud' : 'Vaba'}
+                      title={isBooked ? t('booking.booked') : t('booking.available')}
                     >
                       <span className={isBooked ? 'line-through' : ''}>{slot}</span>
                     </button>
@@ -183,7 +184,7 @@ function Booking() {
               </div>
               {bookedSlots.length > 0 && (
                 <p className="text-sm text-gray-600 mt-2">
-                  ℹ️ Läbikriipsutatud ajad on juba broneeritud
+                  {t('booking.bookedInfo')}
                 </p>
               )}
             </div>
@@ -259,7 +260,7 @@ function Booking() {
             {/* Notes */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Märkused
+                {t('booking.notes')}
               </label>
               <textarea
                 name="notes"
@@ -275,7 +276,7 @@ function Booking() {
               disabled={loading}
               className="btn-primary w-full"
             >
-              {loading ? 'Saadan...' : t('booking.submit')}
+              {loading ? t('booking.sending') : t('booking.submit')}
             </button>
           </form>
         </div>

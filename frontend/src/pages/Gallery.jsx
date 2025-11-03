@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../api/axios';
 
 function Gallery() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [galleryImages, setGalleryImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -61,10 +61,10 @@ function Gallery() {
         <div className="relative h-full flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-5xl md:text-6xl font-bold text-white">
-              Galerii
+              {t('gallery.title')}
             </h1>
             <p className="text-xl text-gray-200 mt-4">
-              Vaata meie tehtud töid ja projekte
+              {t('gallery.subtitle')}
             </p>
           </div>
         </div>
@@ -74,11 +74,11 @@ function Gallery() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-12">
-              <p className="text-xl text-gray-600">Laadimine...</p>
+              <p className="text-xl text-gray-600">{t('gallery.loading')}</p>
             </div>
           ) : galleryImages.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-xl text-gray-600">Galerii on tühi</p>
+              <p className="text-xl text-gray-600">{t('gallery.empty')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

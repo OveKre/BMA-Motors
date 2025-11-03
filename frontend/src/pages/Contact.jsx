@@ -60,7 +60,7 @@ function Contact() {
               {t('contact.title')}
             </h1>
             <p className="text-xl text-gray-200 mt-4">
-              Võta meiega ühendust
+              {t('contact.subtitle')}
             </p>
           </div>
         </div>
@@ -142,7 +142,7 @@ function Contact() {
                 disabled={loading}
                 className="btn-primary w-full"
               >
-                {loading ? 'Saadan...' : t('contact.submit')}
+                {loading ? t('contact.sending') : t('contact.submit')}
               </button>
             </form>
           </div>
@@ -150,33 +150,33 @@ function Contact() {
           {/* Contact Info */}
           <div className="space-y-6">
             <div className="card">
-              <h3 className="text-xl font-semibold mb-4">Kontaktandmed</h3>
+              <h3 className="text-xl font-semibold mb-4">{t('contact.contactInfo')}</h3>
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-gray-600">E-mail</p>
+                  <p className="text-sm text-gray-600">{t('home.email')}</p>
                   <p className="font-medium">info@bmamotors.eu</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Telefon</p>
+                  <p className="text-sm text-gray-600">{t('home.phone')}</p>
                   <p className="font-medium">+372 55 666 310</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Aadress</p>
+                  <p className="text-sm text-gray-600">{t('home.address')}</p>
                   <p className="font-medium">Tallinn, Estonia</p>
                 </div>
               </div>
             </div>
 
             <div className="card">
-              <h3 className="text-xl font-semibold mb-4">Tööaeg</h3>
+              <h3 className="text-xl font-semibold mb-4">{t('contact.workingHours')}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span>Esmaspäev - Reede</span>
+                  <span>{t('contact.monToFri')}</span>
                   <span className="font-medium">09:00 - 18:00</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Laupäev - Pühapäev</span>
-                  <span className="font-medium">Suletud</span>
+                  <span>{t('contact.satToSun')}</span>
+                  <span className="font-medium">{t('contact.closed')}</span>
                 </div>
               </div>
             </div>
