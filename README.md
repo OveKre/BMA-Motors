@@ -295,19 +295,18 @@ Frontend käivitub aadressil: http://localhost:3000
 
 ### Admin kasutaja loomine
 
-Admin parooli hash genereerimine:
+Admin parooli seadmine:
 
 ```powershell
 cd backend
-node -e "const bcrypt = require('bcrypt'); bcrypt.hash('Admin123!', 10).then(console.log)"
+node reset_admin_password.js YourSecurePassword
 ```
 
-Kopeeri genereeritud hash ja asenda `database/seed.sql` failis:
-
-```sql
-INSERT INTO users (username, password_hash, email, role, is_active) VALUES
-('admin', '$2b$10$<your_generated_hash>', 'admin@bmamotors.ee', 'admin', TRUE);
-```
+See skript:
+- Genereerib bcrypt hashi
+- Uuendab andmebaasi
+- Testib parooli
+- Loob kasutaja, kui puudub
 
 ---
 
@@ -391,7 +390,7 @@ GET /api/admin/logs
 ```json
 {
   "username": "admin",
-  "password": "Admin123!"
+  "password": "your_secure_password"
 }
 ```
 

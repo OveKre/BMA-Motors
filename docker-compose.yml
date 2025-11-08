@@ -39,7 +39,8 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-      - ./logs/backend:/app/logs
+      - ./backend/logs:/app/logs
+      - ./backend/uploads:/app/uploads
     networks:
       - bma_network
 
@@ -50,7 +51,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      REACT_APP_API_URL: http://localhost:5000
+      VITE_API_URL: http://localhost:5000/api
     volumes:
       - ./frontend:/app
       - /app/node_modules

@@ -22,8 +22,12 @@ test.describe('Admin Panel', () => {
   test('should attempt login with test credentials', async ({ page }) => {
     await page.goto('/admin');
     
-    await page.fill('input[type="text"]', 'admin');
-    await page.fill('input[type="password"]', 'Admin123!');
+    // Use test credentials from environment or defaults
+    const testUsername = process.env.TEST_ADMIN_USER || 'admin';
+    const testPassword = process.env.TEST_ADMIN_PASS || 'Admin123!';
+    
+    await page.fill('input[type="text"]', testUsername);
+    await page.fill('input[type="password"]', testPassword);
     
     await page.click('button[type="submit"]');
     

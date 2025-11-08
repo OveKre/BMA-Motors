@@ -49,6 +49,8 @@
 .booking-calendar .react-calendar__tile:disabled {
   cursor: not-allowed !important;
   opacity: 0.5;
+  background-color: #f3f4f6 !important; /* gray-100 */
+  color: #9ca3af !important; /* gray-400 */
 }
 
 .booking-calendar .react-calendar__tile:disabled.fully-booked {

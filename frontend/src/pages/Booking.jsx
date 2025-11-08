@@ -148,6 +148,11 @@ function Booking() {
                 minDate={new Date()}
                 locale={i18n.language === 'est' ? 'et-EE' : i18n.language === 'rus' ? 'ru-RU' : 'en-US'}
                 className="mx-auto booking-calendar"
+                tileDisabled={({ date }) => {
+                  // Disable Saturdays (6) and Sundays (0)
+                  const day = date.getDay();
+                  return day === 0 || day === 6;
+                }}
               />
             </div>
 

@@ -6,6 +6,7 @@ function Gallery() {
   const { t, i18n } = useTranslation();
   const [galleryImages, setGalleryImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     fetchGalleryImages();
@@ -83,7 +84,11 @@ function Gallery() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {galleryImages.map((image) => (
-                <div key={image.id} className="card overflow-hidden p-0 hover:shadow-xl transition-shadow duration-300">
+                <div 
+                  key={image.id} 
+                  className="card overflow-hidden p-0 hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+                  onClick={() => setSelectedImage(image)}
+                >
                   <div className="h-64 bg-gray-200 overflow-hidden">
                     <img 
                       src={getImageUrl(image.image_path)} 
@@ -101,6 +106,40 @@ function Gallery() {
           )}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 transition z-10"
+            aria-label="Sulge"
+          >
+            ×
+          </button>
+          <div className="max-w-7xl max-h-full flex flex-col items-center">
+            <img
+              src={getImageUrl(selectedImage.image_path)}
+              alt={getTitle(selectedImage)}
+              className="max-w-full max-h-[85vh] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+            {(getTitle(selectedImage) || getDescription(selectedImage)) && (
+              <div className="mt-4 text-center text-white">
+                {getTitle(selectedImage) && (
+                  <h3 className="text-2xl font-semibold mb-2">{getTitle(selectedImage)}</h3>
+                )}
+                {getDescription(selectedImage) && (
+                  <p className="text-gray-300">{getDescription(selectedImage)}</p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

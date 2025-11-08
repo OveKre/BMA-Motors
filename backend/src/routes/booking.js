@@ -80,6 +80,20 @@ router.post('/',
             throw handleValidationError(errors.array());
         }
 
+        // Kontrolli kas kuupäev on laupäev või pühapäev
+        const bookingDate = new Date(req.body.booking_date);
+        const dayOfWeek = bookingDate.getDay();
+        
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+            return res.status(400).json({
+                success: false,
+                error: { 
+                    message: 'Laupäeval ja pühapäeval ei ole võimalik broneerida. Palun vali tööpäev (E-R).',
+                    field: 'booking_date'
+                }
+            });
+        }
+
         const bookingData = req.body;
         const booking = await Booking.create(bookingData);
 

@@ -44,10 +44,10 @@ if [ ! -d "node_modules" ]; then
     echo "✅ Backend dependencies paigaldatud"
 fi
 
-# Generate admin password
+# Admin password setup reminder
 echo ""
-echo "🔐 Genereerin admin parooli hash..."
-node src/utils/generatePasswordHash.js <<< "Admin123!"
+echo "🔐 Seadista admin parool käsuga:"
+echo "   node reset_admin_password.js YourSecurePassword"
 
 cd ..
 

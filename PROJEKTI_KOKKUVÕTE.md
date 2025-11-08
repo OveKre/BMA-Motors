@@ -171,12 +171,12 @@ docker-compose up -d
 **Genereeri parool**:
 ```powershell
 cd backend
-node src/utils/generatePasswordHash.js
+node reset_admin_password.js YourSecurePassword
 ```
 
-**Default credentials**:
+**Admin credentials**:
 - Kasutajanimi: `admin`
-- Parool: `Admin123!`
+- Parool: Määra reset_admin_password.js skriptiga
 
 ---
 

@@ -3,7 +3,13 @@ const { query } = require('./src/config/database');
 
 async function testLogin() {
     try {
-        const password = 'Admin123!';
+        // Use password from command line argument
+        const password = process.argv[2];
+        
+        if (!password) {
+            console.log('❌ Please provide password as argument: node test_login.js <password>');
+            process.exit(1);
+        }
         
         // Get user from database
         const users = await query(
@@ -27,7 +33,7 @@ async function testLogin() {
         
         // Generate new hash for comparison
         const newHash = await bcrypt.hash(password, 10);
-        console.log('\nNew hash for Admin123!:', newHash);
+        console.log('\nNew hash for provided password:', newHash);
         
         process.exit(0);
     } catch (error) {

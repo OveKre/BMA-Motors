@@ -49,7 +49,7 @@ function AdminLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="card max-w-md w-full">
-        <h2 className="text-2xl font-bold text-center mb-6">Admin Sisselogimine</h2>
+        <h2 className="text-2xl font-bold text-center mb-6"></h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -89,8 +89,6 @@ function AdminLogin() {
         </form>
         
         <div className="mt-4 text-sm text-gray-600 text-center">
-          <p>Test kasutaja:</p>
-          <p className="font-mono">admin / Admin123!</p>
         </div>
       </div>
     </div>

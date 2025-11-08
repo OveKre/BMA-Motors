@@ -3,8 +3,9 @@
 
 USE bma_motors;
 
--- Admin kasutaja (parool: Admin123!)
--- Parool tuleb hiljem muuta bcrypt räsiga
+-- Admin kasutaja
+-- Parool seada käsuga: node backend/reset_admin_password.js YourPassword
+-- Vaikimisi hash on placeholder - MUUDA KINDLASTI!
 INSERT INTO users (username, password_hash, email, role, is_active) VALUES
 ('admin', '$2b$10$E/EUqcpJ6u3cWlwmOBO93uN.RhfvOVIH409JI0hqXwWFexRLAWQ86', 'admin@bmamotors.ee', 'admin', TRUE);
 

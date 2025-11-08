@@ -22,7 +22,11 @@ docker-compose up -d
 ### 4. Admin sisselogimine
 
 - Kasutajanimi: `admin`
-- Parool: `Admin123!`
+- Parool: Küsi projekti haldajalt või loo uus parool käsuga:
+  ```powershell
+  cd backend
+  node reset_admin_password.js YourSecurePassword
+  ```
 
 ---
 
